@@ -1,14 +1,29 @@
+require("dotenv").config()
+
 const express = require("express")
+const passport = require("passport")
+
+const { connectMongoDB } = require("./database/mongoDBconnection")
+const { ErrorHandlerMiddleware } = require("./middleware/ErrorHandler/MiddlewareErrorHandlers")
+const { enablePassportJwtStrategy } = require("./utility/passport/jwtStrategy")
+const Router = require("./router")
+
+
 
 
 const server = express()
+server.use(express.json())
+server.use(passport.initialize())
+enablePassportJwtStrategy(passport)
+server.use(Router)
+server.use(ErrorHandlerMiddleware)
 
 
-
-server.get("/", (req, res) => {
-    res.send("<h1>Hello World.</h1>")
+connectMongoDB().then(() => server.listen(process.env.PORT, () => {
+    console.log(`server listning at port ${process.env.PORT}`);
+})
+).catch((error) => {
+    console.log(`Database not connected . ${error.message}`);
 })
 
-server.listen("3000", () => {
-    console.log("server started at port 3000");
-})
+
