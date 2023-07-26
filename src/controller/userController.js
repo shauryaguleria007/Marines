@@ -55,6 +55,15 @@ exports.authenticateUser = RouterAsyncErrorHandler(async (req, res, next) => {
     })
 })
 
+exports.authorizeUser = RouterAsyncErrorHandler(async (req, res, next) => {
+    if (!req.user) throw new authenticationError()
+    res.json({
+        name: req.user.name,
+        email: req.user.email,
+        role: req.user.role
+    })
+})
+
 
 exports.logoutUser = RouterAsyncErrorHandler(async (req, res, next) => {
     return res.json({ success: true })

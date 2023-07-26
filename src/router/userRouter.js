@@ -2,8 +2,9 @@ const express = require("express")
 const passport = require("passport")
 
 const { check } = require("express-validator")
-const { loginUser, logoutUser, registerUser, authenticateUser } = require("../controller/userController")
+const { loginUser, logoutUser, registerUser, authenticateUser, authorizeUser } = require("../controller/userController")
 const { routeCredentialValidator } = require("../middleware/routeCredentialValidator")
+const { Authorizer } = require("../middleware/Authorizer")
 
 
 
@@ -25,6 +26,10 @@ Router.route("/login").post([
 ], routeCredentialValidator, loginUser)
 
 Router.route("/authenticate").get(passport.authenticate(["jwt"], { session: false }), authenticateUser)
+Router.route("/authorizeuser").get(passport.authenticate(["jwt"], { session: false }), Authorizer(["USER"]), authorizeUser)
+Router.route("/authorizeadmin").get(passport.authenticate(["jwt"], { session: false }), Authorizer(["ADMIN"]), authorizeUser)
+
+
 
 
 
