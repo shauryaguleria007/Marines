@@ -17,7 +17,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <ReduxToolKitStore store={store}>
         <App />
       </ReduxToolKitStore>
-
     </ErrorBoundary>
   </ThemeProvider>
   // </React.StrictMode>,
