@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { Login } from "./pages/Login/Login"
+import { UserRegister } from "./pages/Register/UserRegister"
+import { SellerRegister } from "./pages/Register/SellerRegister"
+import { AdminAuthorizer, Authorizer, SellerAuthorizer, UserAuthorizer } from "./components/Authorizer"
+import { UserHome } from "./pages/Home/UserHome"
+import { SellerHome } from "./pages/Home/SellerHome"
+import { AdminHome } from "./pages/Home/AdminHome"
+import { Error } from "./components/Error/Error"
 
-function App() {
-  const [count, setCount] = useState(0)
+export const App = () => {
+  return <>
+    <BrowserRouter>
+      <Routes>
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+        <Route path="/" Component={Authorizer}>
+
+          <Route path="/user" Component={UserAuthorizer}>
+            <Route path="/user/home" Component={UserHome} />
+          </Route>
+
+          <Route path="/seller" Component={SellerAuthorizer}>
+            <Route path="/seller/home" Component={SellerHome} />
+
+          </Route>
+
+          <Route path="/admin" Component={AdminAuthorizer}>
+            <Route path="/admin/home" Component={AdminHome} />
+          </Route>
+        </Route>
+
+        <Route path="/login" Component={Login} />
+        <Route path="/registeruser" Component={UserRegister} />
+        <Route path="registerseller" Component={SellerRegister} />
+        <Route path="*" Component={Error} />
+      </Routes>
+    </BrowserRouter >
+  </>
 }
-
-export default App
