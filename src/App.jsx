@@ -13,25 +13,24 @@ export const App = () => {
     <BrowserRouter>
       <Routes>
 
-        <Route path="/" Component={Authorizer}>
+        <Route path="/" Component={Authorizer} />
 
-          <Route path="/user" Component={UserAuthorizer}>
-            <Route path="/user/home" Component={UserHome} />
-          </Route>
+        <Route path="/user" Component={UserAuthorizer}>
+          <Route path="/user/home" Component={UserHome} />
+        </Route>
 
-          <Route path="/seller" Component={SellerAuthorizer}>
-            <Route path="/seller/home" Component={SellerHome} />
+        <Route path="/seller" Component={SellerAuthorizer}>
+          <Route path="/seller/home" Component={SellerHome} />
 
-          </Route>
+        </Route>
 
-          <Route path="/admin" Component={AdminAuthorizer}>
-            <Route path="/admin/home" Component={AdminHome} />
-          </Route>
+        <Route path="/admin" Component={AdminAuthorizer}>
+          <Route path="/admin/home" Component={AdminHome} />
         </Route>
 
         <Route path="/login" Component={Login} />
-        <Route path="/registeruser" Component={UserRegister} />
-        <Route path="registerseller" Component={SellerRegister} />
+        <Route path="/register/user" Component={UserRegister} />
+        <Route path="register/seller" Component={SellerRegister} />
         <Route path="*" Component={Error} />
       </Routes>
     </BrowserRouter >
