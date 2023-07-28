@@ -14,7 +14,7 @@ Router.route("/register").post([
     check('email').exists().isEmail(),
     check('password').exists().isLength({ min: 8 }),
     check("name").exists().isLength({ min: 3 }),
-    check("role").optional().isIn(["USER", "HOD", "ADMIN"])
+    check("role").optional().isIn(["USER", "SELLER", "ADMIN"])
 ], routeCredentialValidator, registerUser)
 
 
@@ -27,6 +27,7 @@ Router.route("/login").post([
 
 Router.route("/authenticate").get(passport.authenticate(["jwt"], { session: false }), authenticateUser)
 Router.route("/authorizeuser").get(passport.authenticate(["jwt"], { session: false }), Authorizer(["USER"]), authorizeUser)
+Router.route("/authorizeseller").get(passport.authenticate(["jwt"], { session: false }), Authorizer(["SELLER"]), authorizeUser)
 Router.route("/authorizeadmin").get(passport.authenticate(["jwt"], { session: false }), Authorizer(["ADMIN"]), authorizeUser)
 
 
