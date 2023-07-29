@@ -16,7 +16,7 @@ const server = express()
 server.use(cors({
     origin: [`${process.env.CLIENT_URL}`],
     credentials: true,
-    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"]
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"]
 }))
 server.use(express.json())
 server.use(passport.initialize())
