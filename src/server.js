@@ -14,7 +14,7 @@ const Router = require("./router")
 
 const server = express()
 server.use(cors({
-    origin: `${process.env.CLIENT_URL}`,
+    origin: [`${process.env.CLIENT_URL}`],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE"   
 }))
 server.use(express.json())
