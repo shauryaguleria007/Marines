@@ -6,13 +6,17 @@ import { useDispatch } from "react-redux"
 import { setUser } from "../store/features/userSlice"
 
 export const Authorizer = () => {
+    console.log(import.meta.env.VITE_SETVER_URL);
     const { data, error } = useAutenticateUserQuery()
     const navigate = useNavigate()
     useEffect(() => {
         if (data) {
             return navigate(`${data.path}`)
         }
-        if (error) console.log(error)
+        if (error) {
+            console.log(error);
+            return navigate("/login")
+        }
     }, [data, error])
 
     return <Loading />
