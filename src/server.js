@@ -15,7 +15,8 @@ const Router = require("./router")
 const server = express()
 server.use(cors({
     origin: [`${process.env.CLIENT_URL}`],
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE"   
+    credentials: true,
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"]
 }))
 server.use(express.json())
 server.use(passport.initialize())
