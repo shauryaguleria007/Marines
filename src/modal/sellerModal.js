@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 const bcrypt = require('bcrypt');
 
 
-const userSchema = new mongoose.Schema({
+const sellerSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
     ,
     role: {
         type: String,
-        default: "USER"
+        default: "SELLER",
     },
     password: {
         type: String,
@@ -28,14 +28,15 @@ const userSchema = new mongoose.Schema({
 )
 
 
-userSchema.pre('save', async function (next) {
+sellerSchema.pre('save', async function (next) {
     if (this.isModified('password')) {
+
         const salt = await bcrypt.genSalt(10);
         this.password = await bcrypt.hash(this.password, salt);
     }
 })
 
-userSchema.methods.comparePassword = async function (password) {
+sellerSchema.methods.comparePassword = async function (password) {
 
     return await bcrypt.compare(password, this.password);
 
@@ -43,4 +44,4 @@ userSchema.methods.comparePassword = async function (password) {
 
 
 
-exports.UserModal = mongoose.model("User", userSchema)
+exports.SellerModal = mongoose.model("Seller", sellerSchema)

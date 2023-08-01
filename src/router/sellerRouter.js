@@ -2,7 +2,7 @@ const express = require("express")
 const passport = require("passport")
 
 const { check } = require("express-validator")
-const { loginUser, registerUser } = require("../controller/userController")
+const { loginSeller, registerSeller } = require("../controller/sellerController")
 const { routeCredentialValidator } = require("../middleware/routeCredentialValidator")
 
 
@@ -19,7 +19,7 @@ Router.route("/register").post([
         minSymbols: 1
     }),
     check("name").exists().isLength({ min: 3 }),
-], routeCredentialValidator, registerUser)
+], routeCredentialValidator, registerSeller)
 
 
 
@@ -33,7 +33,10 @@ Router.route("/login").post([
         minNumbers: 1,
         minSymbols: 1
     })
-], routeCredentialValidator, loginUser)
+], routeCredentialValidator, loginSeller)
+
+
+
 
 
 module.exports = Router

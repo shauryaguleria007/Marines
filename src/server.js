@@ -6,7 +6,7 @@ const cors = require("cors")
 
 const { connectMongoDB } = require("./database/mongoDBconnection")
 const { ErrorHandlerMiddleware } = require("./middleware/ErrorHandler/MiddlewareErrorHandlers")
-const { enablePassportJwtStrategy } = require("./utility/passport/jwtStrategy")
+const { enableUserPassportJwtStrategy, enableSellerPassportJwtStrategy } = require("./utility/passport/jwtStrategy")
 const Router = require("./router")
 
 
@@ -20,7 +20,8 @@ server.use(cors({
 }))
 server.use(express.json())
 server.use(passport.initialize())
-enablePassportJwtStrategy(passport)
+enableUserPassportJwtStrategy(passport)
+enableSellerPassportJwtStrategy(passport)
 server.use(Router)
 server.use(ErrorHandlerMiddleware)
 
