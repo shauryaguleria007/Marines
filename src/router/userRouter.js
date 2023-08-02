@@ -2,7 +2,7 @@ const express = require("express")
 const passport = require("passport")
 
 const { check } = require("express-validator")
-const { loginUser, registerUser } = require("../controller/userController")
+const { loginUser, registerUser, loginUserOauth } = require("../controller/userController")
 const { routeCredentialValidator } = require("../middleware/routeCredentialValidator")
 
 
@@ -23,6 +23,9 @@ Router.route("/register").post([
 
 
 
+Router.route("/login/google").get(passport.authenticate("userGoolgeStrategy"))
+Router.route("/callback").get(passport.authenticate("userGoolgeStrategy", { session: false }),loginUserOauth)
+
 
 Router.route("/login").post([
     check('email').exists().isEmail(),
@@ -34,6 +37,8 @@ Router.route("/login").post([
         minSymbols: 1
     })
 ], routeCredentialValidator, loginUser)
+
+
 
 
 module.exports = Router

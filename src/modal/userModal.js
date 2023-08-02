@@ -17,9 +17,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "USER"
     },
+    authentication: [{
+        type: String,
+        unique: true,
+        enum: ["OAUTH", "JWT"]
+    }],
     password: {
         type: String,
-        required: true,
         select: false
     }
 

@@ -17,9 +17,13 @@ const sellerSchema = new mongoose.Schema({
         type: String,
         default: "SELLER",
     },
+    authentication: [{
+        type: String,
+        unique: true,
+        enum: ["OAUTH", "JWT"]
+    }],
     password: {
         type: String,
-        required: true,
         select: false
     }
 

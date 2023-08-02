@@ -2,7 +2,7 @@ const express = require("express")
 const passport = require("passport")
 
 const { check } = require("express-validator")
-const { loginSeller, registerSeller } = require("../controller/sellerController")
+const { loginSeller, registerSeller, loginSellerOauth } = require("../controller/sellerController")
 const { routeCredentialValidator } = require("../middleware/routeCredentialValidator")
 
 
@@ -21,6 +21,9 @@ Router.route("/register").post([
     check("name").exists().isLength({ min: 3 }),
 ], routeCredentialValidator, registerSeller)
 
+
+Router.route("/login/google").get(passport.authenticate("sellerGoolgeStrategy"))
+Router.route("/callback").get(passport.authenticate("sellerGoolgeStrategy", { session: false }), loginSellerOauth)
 
 
 
