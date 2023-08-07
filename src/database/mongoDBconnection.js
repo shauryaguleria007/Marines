@@ -1,5 +1,19 @@
 const mongoose = require("mongoose")
+let gfs
+
+
+
 exports.connectMongoDB = async () => {
+
+    const connection = mongoose.connection
+
+    connection.once('open', () => {
+        gfs = new mongoose.mongo.GridFSBucket(connection.db, {
+            bucketName: "uploads"
+        })
+    })
+
+    
     await mongoose
         .set('strictQuery', false)
         .connect(process.env.mongoDBConnectionString, {
@@ -14,3 +28,4 @@ exports.connectMongoDB = async () => {
 }
 
 
+exports.getGFS = () => gfs

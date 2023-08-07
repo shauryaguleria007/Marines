@@ -13,13 +13,16 @@ const sellerSchema = new mongoose.Schema({
         unique: true,
     }
     ,
+    verified: {
+        type: Boolean,
+        default: false
+    },
     role: {
         type: String,
         default: "SELLER",
     },
     authentication: [{
         type: String,
-        unique: true,
         enum: ["OAUTH", "JWT"]
     }],
     password: {
