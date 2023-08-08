@@ -2,7 +2,11 @@ const express = require("express")
 const passport = require("passport")
 
 const { check } = require("express-validator")
-const { loginUser, registerUser, loginUserOauth } = require("../controller/userController")
+const { loginUser,
+    registerUser,
+    loginUserOauth,
+    addToCart,
+    removeFromCart } = require("../controller/userController")
 const { routeCredentialValidator } = require("../middleware/routeCredentialValidator")
 
 
@@ -24,7 +28,7 @@ Router.route("/register").post([
 
 
 Router.route("/login/google").get(passport.authenticate("userGoolgeStrategy"))
-Router.route("/callback").get(passport.authenticate("userGoolgeStrategy", { session: false }),loginUserOauth)
+Router.route("/callback").get(passport.authenticate("userGoolgeStrategy", { session: false }), loginUserOauth)
 
 
 Router.route("/login").post([
@@ -39,6 +43,19 @@ Router.route("/login").post([
 ], routeCredentialValidator, loginUser)
 
 
+Router.route("/cart/add").post(
+    passport.authenticate(["userJwtStrategy"], { session: false }),
+    [
+        check("productId").exists().isMongoId(),
+        check("quantity").exists().isInt({ gt: 0, lt: 10 })
+    ], routeCredentialValidator, addToCart)
 
-
+Router.route("/cart/remove").post(
+    passport.authenticate(["userJwtStrategy"], { session: false }),
+    [
+        check("productId").exists().isMongoId()
+    ],
+    routeCredentialValidator,
+    removeFromCart
+)
 module.exports = Router

@@ -1,4 +1,4 @@
-const { } = require("../controller/orderController")
+const { createOrder } = require("../controller/orderController")
 
 
 
@@ -10,6 +10,8 @@ const { routeCredentialValidator } = require("../middleware/routeCredentialValid
 
 
 const Router = express.Router()
+
+Router.route("/add").post(createOrder)
 
 
 

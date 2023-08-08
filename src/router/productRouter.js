@@ -7,8 +7,8 @@ const { createProduct,
 const { routeCredentialValidator } = require("../middleware/routeCredentialValidator")
 const { upload } = require("../utility/GridFsStorage")
 
-const express = require("express")
 const passport = require("passport")
+const express = require("express")
 
 const { check } = require("express-validator")
 
@@ -16,13 +16,14 @@ const { check } = require("express-validator")
 const Router = express.Router()
 
 
-Router.route("/addproduct").post([
-    check("name").exists().isLength({ min: 3, max: 50 }),
-    check("stock").exists().isInt({ gt: 0 }),
-    check("price").exists().isInt({ gt: 0 }),
-    check("sellerId").exists().isMongoId(),
-    check("description").exists()
-],
+Router.route("/addproduct").post(
+    passport.authenticate(["sellerJwtStrategy"], { session: false }),
+    [
+        check("name").exists().isLength({ min: 3, max: 50 }),
+        check("stock").exists().isInt({ gt: 0 }),
+        check("price").exists().isInt({ gt: 0 }),
+        check("description").exists()
+    ],
     routeCredentialValidator,
     createProduct)
 

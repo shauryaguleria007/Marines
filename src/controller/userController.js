@@ -1,8 +1,10 @@
 
 const jwt = require("jsonwebtoken")
 const { UserModal } = require("../modal/userModal")
+const { ProductModal } = require("../modal/productModel")
 const { RouterAsyncErrorHandler } = require("../middleware/ErrorHandler/MiddlewareErrorHandlers")
 const { internalServerError, credentialError } = require("../middleware/ErrorHandler/customError")
+const { Router } = require("express")
 
 
 exports.registerUser = RouterAsyncErrorHandler(async (req, res, next) => {
@@ -67,4 +69,23 @@ exports.logoutUser = RouterAsyncErrorHandler(async (req, res, next) => {
 exports.deleteUser = RouterAsyncErrorHandler(async (req, res, next) => {
 
     return res.json({ success: true })
+})
+
+exports.addToCart = RouterAsyncErrorHandler(async (req, res, next) => {
+    const { productId, quantity } = req.body
+    const product = await ProductModal.findById(productId)
+    if (!product) throw new Error()
+    const cartProduct = req.user.cart.find(pro => pro.product.toString() === productId)
+    if (cartProduct) cartProduct.quantity += Number(quantity)
+    else req.user.cart.push({ product: productId, quantity })
+    await req.user.save()
+    res.json({
+        success: true
+    })
+})
+
+exports.removeFromCart = RouterAsyncErrorHandler(async (req, res, next) => {
+    const { productId } = req.body
+    await req.user.updateOne({ $pull: { cart: { product: productId } } })
+    res.json({ success: true })
 })

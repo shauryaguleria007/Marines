@@ -25,11 +25,22 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ["OAUTH", "JWT"]
     }],
+    cart: [{
+        product: {
+            type: mongoose.Types.ObjectId,
+            ref: "Product",
+            required: true
+        },
+        quantity: {
+            type: Number,
+            default: 0,
+            required: true
+        }
+    }],
     password: {
         type: String,
         select: false
     }
-
 },
     { timestamps: true }
 )

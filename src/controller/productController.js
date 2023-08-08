@@ -4,7 +4,9 @@ const { Router } = require("express")
 const mongoose = require("mongoose")
 
 exports.createProduct = RouterAsyncErrorHandler(async (req, res, next) => {
-    const { price, stock, name, description, sellerId } = req.body
+    const { price, stock, name, description } = req.body
+    console.log(req.user);
+    const sellerId = req.user.id
     const product = await ProductModal.create({ price, stock, name, description, seller: sellerId })
     if (!product) throw new Error()
     res.json({ id: product.id })

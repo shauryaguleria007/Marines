@@ -34,7 +34,7 @@ exports.enableSellerPassportJwtStrategy = (passport) => {
         "sellerJwtStrategy",
         new JwtStrategy(opts, async (jwt_payload, done) => {
             const user = await SellerModal.findById(jwt_payload.id).catch((error) => {
-                return done(null, false)
+                return done(error, false)
             })
             if (user) return done(null, user)
             return done(null, false)
