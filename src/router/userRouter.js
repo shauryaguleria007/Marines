@@ -6,6 +6,8 @@ const { loginUser,
     registerUser,
     loginUserOauth,
     addToCart,
+    sendVerificationMail,
+    validateVerificationMail,
     removeFromCart } = require("../controller/userController")
 const { routeCredentialValidator } = require("../middleware/routeCredentialValidator")
 
@@ -58,4 +60,14 @@ Router.route("/cart/remove").post(
     routeCredentialValidator,
     removeFromCart
 )
+
+Router.route("/verification/send").get(passport.authenticate(["userJwtStrategy"], { session: false }), sendVerificationMail)
+
+Router.route("/verification/verify").get([
+    check("id").exists().isMongoId(),
+    check("token").exists()
+],
+    routeCredentialValidator,
+    validateVerificationMail)
+
 module.exports = Router

@@ -11,7 +11,9 @@ exports.createOrder = RouterAsyncErrorHandler(async (req, res, next) => {
 
     const cartOrder = user.cart.find(ord => ord.id === cartId)
     const product = await ProductModal.findById(cartOrder.product)
+    if (!product) throw new Error()
     if (product.stock < cartOrder.quantity) throw new Error()
+
 
     const order = await OrderModal.create({
         user: user.id,
@@ -22,10 +24,25 @@ exports.createOrder = RouterAsyncErrorHandler(async (req, res, next) => {
     })
     if (!order) throw new Error()
 
+    await product.updateOne({ stock: product.stock - 1 })
+
     await user.updateOne({
-        $pull: { cart: { product: product.id } },
-        $push: { order: order.id }
+        $pull: { cart: { product: product.id } }
     })
 
+
     res.json({ success: true })
+})
+
+
+exports.getAllOrders = RouterAsyncErrorHandler(async (req, res, next) => {
+    let filter = {}
+    const user = req.user
+    if (req.user.role === "USER") filter = { user: user.id }
+    if (req.user.role === "SELLER") filter = { seller: user.id }
+
+    const orders = await OrderModal.find(filter)
+    if (!orders) throw new Error()
+
+    res.json(orders)
 })

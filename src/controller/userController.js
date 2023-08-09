@@ -4,6 +4,7 @@ const { UserModal } = require("../modal/userModal")
 const { ProductModal } = require("../modal/productModel")
 const { RouterAsyncErrorHandler } = require("../middleware/ErrorHandler/MiddlewareErrorHandlers")
 const { internalServerError, credentialError } = require("../middleware/ErrorHandler/customError")
+const { verificationMail } = require("../utility/mailer/verificationMail")
 const { Router } = require("express")
 
 
@@ -87,5 +88,29 @@ exports.addToCart = RouterAsyncErrorHandler(async (req, res, next) => {
 exports.removeFromCart = RouterAsyncErrorHandler(async (req, res, next) => {
     const { productId } = req.body
     await req.user.updateOne({ $pull: { cart: { product: productId } } })
+    res.json({ success: true })
+})
+
+exports.sendVerificationMail = RouterAsyncErrorHandler(async (req, res, next) => {
+    const user = req.user
+    if (user.verified) throw new Error()
+    const token = await user.addVerificationToken()
+    await verificationMail({
+        email: user.email,
+        client: user.id,
+        token,
+        role: user.role
+    })
+    res.json({ success: true })
+})
+
+
+exports.validateVerificationMail = RouterAsyncErrorHandler(async (req, res, next) => {
+    const { id, token } = req.query
+    const user = await UserModal.findById(id)
+    if (!user || user.verified) throw new Error()
+    if (token !== user.mailToken.token || (new Date) > user.mailToken.expiry) throw new Error()
+    user.verified = true
+    await user.save()
     res.json({ success: true })
 })

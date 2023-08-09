@@ -1,4 +1,4 @@
-const { createOrder } = require("../controller/orderController")
+const { createOrder, getAllOrders } = require("../controller/orderController")
 
 
 
@@ -19,5 +19,12 @@ Router.route("/add").post(passport.authenticate(["userJwtStrategy"], { session: 
     createOrder)
 
 
-
+Router.route("/get/all").post(
+    passport.authenticate(["userJwtStrategy", "sellerJwtStrategy"], { session: false }), [
+    check("sellerId").optional().isMongoId(),
+    check("userId").optional().isMongoId()
+],
+    routeCredentialValidator,
+    getAllOrders
+)
 module.exports = Router

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 const bcrypt = require('bcrypt');
-
+const crypto = require("crypto")
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -11,8 +11,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-    }
-    ,
+    },
+    mailToken: {
+        token: {
+            type: String
+        },
+        expiry: {
+            type: Date
+        }
+    },
     role: {
         type: String,
         default: "USER"
@@ -37,10 +44,6 @@ const userSchema = new mongoose.Schema({
             required: true
         }
     }],
-    order: [{
-        type: mongoose.Types.ObjectId,
-        required: true
-    }],
     password: {
         type: String,
         select: false
@@ -61,6 +64,19 @@ userSchema.methods.comparePassword = async function (password) {
 
     return await bcrypt.compare(password, this.password);
 
+}
+
+
+userSchema.methods.addVerificationToken = async function () {
+    const token = crypto.randomBytes(64).toString('hex')
+    const date = new Date
+    const expiry = new Date((new Date).getTime() + 10 * 6000)
+    this.mailToken = {
+        token,
+        expiry
+    }
+    await this.save()
+    return token
 }
 
 
