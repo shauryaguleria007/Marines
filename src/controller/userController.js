@@ -112,5 +112,6 @@ exports.validateVerificationMail = RouterAsyncErrorHandler(async (req, res, next
     if (token !== user.mailToken.token || (new Date) > user.mailToken.expiry) throw new Error()
     user.verified = true
     await user.save()
+    //redirect on email verification .
     res.json({ success: true })
 })
