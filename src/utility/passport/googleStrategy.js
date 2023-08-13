@@ -16,7 +16,7 @@ exports.enableUserGoogleStrategy = (passport) => {
         let user = await UserModal.findOne({ email })
         if (user) return done(null, user)
 
-        user = await UserModal.create({ name, email, authentication: ["OAUTH"] })
+        user = await UserModal.create({ name, email, authentication: ["OAUTH"], verified: true })
         if (user) return done(null, user)
         return done(null, false)
     }
@@ -42,7 +42,7 @@ exports.enableSellerGoogleStrategy = (passport) => {
         let user = await SellerModal.findOne({ email })
         if (user) return done(null, user)
 
-        user = await SellerModal.create({ name, email, authentication: ["OAUTH"] })
+        user = await SellerModal.create({ name, email, authentication: ["OAUTH"], verified: true })
         if (user) return done(null, user)
         return done(null, false)
     }

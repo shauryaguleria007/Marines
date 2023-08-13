@@ -58,7 +58,8 @@ exports.loginUserOauth = RouterAsyncErrorHandler(async (req, res, next) => {
         { expiresIn: '1d' }
     )
 
-    return res.json({ token: "Bearer " + token })
+    return res.redirect(`${process.env.CLIENT_URL}/auth/callback?token=${token}`)
+
 })
 
 
@@ -114,4 +115,17 @@ exports.validateVerificationMail = RouterAsyncErrorHandler(async (req, res, next
     await user.save()
     //redirect on email verification .
     res.json({ success: true })
+})
+
+
+
+exports.authenticateUser = RouterAsyncErrorHandler(async (req, res, next) => {
+    const data = {}
+    const user = req.user
+    data.name = user.name
+    data.role = user.role
+    data.email = user.email
+    data.verified = user.verified
+    data.id = user.id
+    res.json(data)
 })

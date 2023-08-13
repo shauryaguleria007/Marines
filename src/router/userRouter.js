@@ -8,6 +8,7 @@ const { loginUser,
     addToCart,
     sendVerificationMail,
     validateVerificationMail,
+    authenticateUser,
     removeFromCart } = require("../controller/userController")
 const { routeCredentialValidator } = require("../middleware/routeCredentialValidator")
 
@@ -69,5 +70,7 @@ Router.route("/verification/verify").get([
 ],
     routeCredentialValidator,
     validateVerificationMail)
+
+Router.route("/authenticate").get(passport.authenticate(["userJwtStrategy", "sellerJwtStrategy"], { session: false }), authenticateUser)
 
 module.exports = Router

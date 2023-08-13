@@ -56,8 +56,7 @@ exports.loginSellerOauth = RouterAsyncErrorHandler(async (req, res, next) => {
         process.env.sellerJWT,
         { expiresIn: '1d' }
     )
-
-    return res.json({ token: "Bearer " + token })
+    return res.redirect(`${process.env.CLIENT_URL}/auth/callback?token=${token}`)
 })
 
 
