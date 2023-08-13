@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 
 export const userApi = createApi({
-    reducerPath: "authApiPath",
+    reducerPath: "userApiPath",
     baseQuery: fetchBaseQuery({
         baseUrl: `${import.meta.env.VITE_SETVER_URL}/api/user`,
         withCredentials: true,

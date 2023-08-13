@@ -7,6 +7,7 @@ import './index.css'
 import { createTheme, ThemeProvider, colors } from '@mui/material'
 import { store } from './store/store.js'
 import { Provider as ReduxToolKitStore } from 'react-redux'
+import { NotificationContextProvider } from "./context/notificationContext.jsx"
 
 const Theme = createTheme({
   palette: {
@@ -27,7 +28,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <ThemeProvider theme={Theme}>
     <ErrorBoundary fallback={<Error />}>
       <ReduxToolKitStore store={store}>
-        <App />
+        <NotificationContextProvider>
+          <App />
+        </NotificationContextProvider>
       </ReduxToolKitStore>
     </ErrorBoundary>
   </ThemeProvider>

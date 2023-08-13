@@ -7,7 +7,7 @@ import { useAutenticateUserQuery } from "../store/services/userApi"
 import { getUser } from "../store/store"
 import { Navbar } from "./Navbar/Navbar"
 import { Box } from "@mui/material"
-
+import { Footer } from "../components/Footer"
 export const Authorizer = () => {
     const { data, error, isLoading } = useAutenticateUserQuery()
     const dispatch = useDispatch()
@@ -34,9 +34,11 @@ export const Authorizer = () => {
             width: "99.8vw",
             m: 0,
             p: 0,
+            overflowX: "hidden"
         }}>
             <Navbar />
             <Outlet />
+            <Footer />
         </Box>
     </>
     return <Loading />

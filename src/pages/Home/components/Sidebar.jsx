@@ -1,5 +1,5 @@
 import React from 'react'
-import { Paper, Stack } from "@mui/material"
+import { Paper, Stack, Box } from "@mui/material"
 import { Link } from "react-router-dom"
 import { getUser } from "../../../store/store"
 export const Sidebar = () => {
@@ -7,8 +7,27 @@ export const Sidebar = () => {
 
 
     const addSellerLinks = () => <>
-        <Link to={"/seller"} style={{ textDecoration: 'none' }}>Products</Link>
-        <Link to={"/seller/orders"} style={{ textDecoration: 'none' }}>Orders</Link>
+        <Box sx={{
+            borderBottom: "1px solid rgba(114, 200, 240, 0.3)",
+            width: 0.75,
+            pb: 1,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+        }}>
+            <Link to={"/seller"} style={{ textDecoration: 'none' }}>Products</Link>
+        </Box>
+        <Box sx={{
+
+            borderBottom: "1px solid rgba(114, 200, 240, 0.3)",
+            width: 0.75,
+            pb: 1,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+        }}>
+            <Link to={"/seller/orders"} style={{ textDecoration: 'none' }}>Orders</Link>
+        </Box>
     </>
     return (
         <Paper sx={{

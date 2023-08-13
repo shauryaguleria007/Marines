@@ -8,9 +8,18 @@ import { Authorizer, UserAuthorizer, SellerAuthorizer, AdminAuthorizer } from ".
 import { SellerHome } from "./pages/Home/Seller/SellerHome"
 import { SellerProducts } from "./pages/Home/Seller/SellerProducts"
 import { SellerOrders } from "./pages/Home/Seller/SellerOrders"
-
+import { Snackbar, Alert } from "@mui/material"
+import { useNotificationContext } from "./context/notificationContext"
 export const App = () => {
+
+  const { notification, resetNotification } = useNotificationContext()
+
   return <>
+    <Snackbar open={notification.activate} autoHideDuration={4000} onClose={resetNotification}>
+      <Alert onClose={resetNotification} severity="success" sx={{ width: '100%' }}>
+        {notification?.message}
+      </Alert>
+    </Snackbar>
     <BrowserRouter>
       <Routes>
         <Route path="/login" Component={Login} />

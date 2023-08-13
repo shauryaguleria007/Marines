@@ -13,7 +13,6 @@ export const SellerHome = () => {
       <Sidebar />
       <Box sx={{
         flexBasis: "82%",   //delete
-        border: "1px solid black"
       }}>
         <Outlet />
       </Box>

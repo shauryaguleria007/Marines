@@ -6,7 +6,6 @@ const pages = ["s", "sd"]
 export const Navbar = () => {
 
     const user = getUser()
-    console.log(user);
     return <>
         <AppBar position="static" sx={{ m: 0 }}>
             <Container maxWidth="xl">
@@ -39,7 +38,6 @@ export const Navbar = () => {
                         Apni Mandi
                     </Typography>
                     <Box>
-                        {/* render links here  */}
 
                     </Box>
                 </Toolbar>
