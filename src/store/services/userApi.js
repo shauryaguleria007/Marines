@@ -22,20 +22,6 @@ export const userApi = createApi({
             keepUnusedDataFor: 0.001,
 
         }),
-        AuthorizeUser: builder.query({
-            query: () => "/authorizeuser",
-            keepUnusedDataFor: 0.001,
-
-        }),
-        AuthorizeSeller: builder.query({
-            query: () => "/authorizeseller",
-            keepUnusedDataFor: 0.001,
-
-        }), AuthorizeAdmin: builder.query({
-            query: () => "/authorizeadmin",
-            keepUnusedDataFor: 0.001,
-
-        }),
         LoginUser: builder.mutation({
             query: (body) => ({
                 url: "/login",
@@ -65,10 +51,8 @@ export const userApi = createApi({
 )
 
 
-export const { useAutenticateUserQuery,
-    useAuthorizeAdminQuery,
-    useAuthorizeSellerQuery,
-    useAuthorizeUserQuery,
+export const {
+    useAutenticateUserQuery,
     useLoginUserMutation,
     useRegisterSellerMutation,
     useRegisterUserMutation

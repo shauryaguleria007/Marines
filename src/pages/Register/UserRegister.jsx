@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useRegisterUserMutation } from "../../store/services/userApi"
 import { useNavigate } from 'react-router-dom'
 import { Stack, TextField, Button, Typography } from "@mui/material"
@@ -8,6 +8,9 @@ export const UserRegister = () => {
     const [RegisterUserMutation, { data, error, isLoading }] = useRegisterUserMutation()
     const navigate = useNavigate()
 
+
+    const input = useRef(null)
+    const [width, setWidth] = useState("400px")
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -24,12 +27,33 @@ export const UserRegister = () => {
 
     }, [data, error])
 
+    useEffect(() => {
+        setWidth(input?.current?.clientWidth || "400px")
+    }, [input])
 
     const RegisterUser = async (e) => {
         e.preventDefault()
         if (formData.email === "" || formData.name === "") return
         await RegisterUserMutation({ ...formData })
         setFormData({ email: "", password: "", name: "" })
+    }
+
+    const googleRegister = async () => {
+        const oauthWindow = window.open(
+            `${import.meta.env.VITE_SETVER_URL}/api/user/login/google`,
+            '_self',
+            'width=500,height=600'
+        )
+
+
+        window.addEventListener('message', (event) => {
+            console.log(event.origin)
+            console.log(event.data)
+            if (event.origin === import.meta.env.VITE_SETVER_URL) {
+                console.log("here")
+                oauthWindow.close()
+            }
+        })
     }
     return (
         <>
@@ -58,10 +82,18 @@ export const UserRegister = () => {
                             Register as a Customer.
                         </Typography >
                         < TextField type="text" label="name" value={formData.name} onChange={(e) => setFormData((data) => ({ ...data, name: e.target.value }))} size="large" variant="filled" sx={{ width: "66.6%" }} />
-                        <TextField type="email" label="email" value={formData.email} onChange={(e) => setFormData((data) => ({ ...data, email: e.target.value }))} size="large" variant="filled" sx={{ width: "66.6%" }} />
+                        <TextField ref={input} type="email" label="email" value={formData.email} onChange={(e) => setFormData((data) => ({ ...data, email: e.target.value }))} size="large" variant="filled" sx={{ width: "66.6%" }} />
                         < TextField type="password" label="password" value={formData.password} onChange={(e) => setFormData((data) => ({ ...data, password: e.target.value }))} size="large" variant="filled" sx={{ width: "66.6%" }} />
 
-                        <Button disabled={isLoading} variant="contained" size="large" type="submit" >Become a Customer</Button>
+                        <Stack direction={"row"} sx={{
+                            width: width,
+                            alignItems: "center",
+                            justifyContent: "space-around"
+                        }}>
+                            <Button disabled={isLoading} variant="contained" size="large" type="submit" >Become a Customer</Button>
+                            <Button variant='contained' onClick={googleRegister} >google</Button>
+
+                        </Stack>
                         <Link to="/login" style={{ textDecoration: "none" }}>Already have an account ? Login</Link>
                         <Link to="/register/seller" style={{ textDecoration: "none" }}>create a seller account</Link>
                     </Stack>

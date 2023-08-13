@@ -1,77 +1,73 @@
 import { useEffect } from "react"
-import { Outlet, useNavigate } from "react-router-dom"
-import { Loading } from "../components/Loading"
-import { useAutenticateUserQuery, useAuthorizeUserQuery, useAuthorizeAdminQuery, useAuthorizeSellerQuery } from "../store/services/userApi"
-import { useDispatch } from "react-redux"
+import { useNavigate, Outlet, useLocation } from "react-router-dom"
 import { setUser } from "../store/features/userSlice"
+import { useDispatch } from "react-redux"
+import { Loading } from "../components/Loading"
+import { useAutenticateUserQuery } from "../store/services/userApi"
+import { getUser } from "../store/store"
+import { Navbar } from "./Navbar/Navbar"
+import { Box } from "@mui/material"
 
 export const Authorizer = () => {
-    console.log(import.meta.env.VITE_SETVER_URL);
-    const { data, error } = useAutenticateUserQuery()
+    const { data, error, isLoading } = useAutenticateUserQuery()
+    const dispatch = useDispatch()
     const navigate = useNavigate()
+    const location = useLocation()
     useEffect(() => {
         if (data) {
-            return navigate(`${data.path}`)
+            const path = data.role === "SELLER" ? "/seller" : "/user"
+            dispatch(setUser(data))
+            if (location.pathname === path) return
+            return navigate(`${path}`)
         }
         if (error) {
-            console.log(error);
+            console.log(error)
             return navigate("/login")
         }
-    }, [data, error])
+    }, [
+        data, error
+    ])
 
+    if (data) return <>
+        <Box sx={{
+            height: "99.8vh",
+            width: "99.8vw",
+            m: 0,
+            p: 0,
+        }}>
+            <Navbar />
+            <Outlet />
+        </Box>
+    </>
     return <Loading />
 }
 
 export const UserAuthorizer = () => {
-    const { data, error } = useAuthorizeUserQuery()
-    const dispatch = useDispatch()
+    const user = getUser()
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (error) return navigate("/login")
-        if (data) { console.log(data); dispatch(setUser({ name: data.name, email: data.email })) }
-    }, [data, error])
-
-    return <>
-        {
-            data ? <Outlet /> : <Loading />
-        }
-    </>
+        if (!user) return
+        if (user.role !== "USER") return navigate("/login")
+    }, [user])
+    if (!user) return <Loading />
+    return <Outlet />
 }
 
 
-
 export const SellerAuthorizer = () => {
-    const { data, error } = useAuthorizeSellerQuery()
-    const dispatch = useDispatch()
+    const user = getUser()
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (error) return navigate("/login")
-        if (data) { console.log(data); dispatch(setUser({ name: data.name, email: data.email })) }
-    }, [data, error])
-
-    return <>
-        {
-            data ? <Outlet /> : <Loading />
-        }
-    </>
+        if (!user) return
+        if (user.role !== "SELLER") return navigate("/login")
+    }, [user])
+    if (!user) return <Loading />
+    return <Outlet />
 }
 
 
 export const AdminAuthorizer = () => {
-    const { data, error } = useAuthorizeAdminQuery()
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        if (error) return navigate("/login")
-        if (data) { console.log(data); dispatch(setUser({ name: data.name, email: data.email })) }
-    }, [data, error])
-
-    return <>
-        {
-            data ? <Outlet /> : <Loading />
-        }
-    </>
+    return <Outlet />
 }
