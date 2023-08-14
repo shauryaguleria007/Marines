@@ -5,7 +5,8 @@ const { ProductModal } = require("../modal/productModel")
 const { RouterAsyncErrorHandler } = require("../middleware/ErrorHandler/MiddlewareErrorHandlers")
 const { internalServerError, credentialError } = require("../middleware/ErrorHandler/customError")
 const { verificationMail } = require("../utility/mailer/verificationMail")
-const { Router } = require("express")
+const { getGFS } = require("../database/mongoDBconnection")
+const mongoose = require("mongoose")
 
 
 exports.registerUser = RouterAsyncErrorHandler(async (req, res, next) => {
@@ -77,10 +78,14 @@ exports.addToCart = RouterAsyncErrorHandler(async (req, res, next) => {
     const { productId, quantity } = req.body
     const product = await ProductModal.findById(productId)
     if (!product) throw new Error()
-    const cartProduct = req.user.cart.find(pro => pro.product.toString() === productId)
+    if (product.stock <= 0) throw new Error()
+    const cartProduct = req.user.cart.data.find(pro => pro.product.toString() === productId)
     if (cartProduct) cartProduct.quantity += Number(quantity)
-    else req.user.cart.push({ product: productId, quantity })
+    else req.user.cart.data.push({ product: productId, quantity })
+    req.user.cart.total += 1
     await req.user.save()
+    product.stock -= 1
+    await product.save()
     res.json({
         success: true
     })
@@ -128,4 +133,21 @@ exports.authenticateUser = RouterAsyncErrorHandler(async (req, res, next) => {
     data.verified = user.verified
     data.id = user.id
     res.json(data)
+})
+
+
+exports.getFile = RouterAsyncErrorHandler(async (req, res, next) => {
+    const { imageId } = req.params
+    const gfs = getGFS();
+    const imageStream = gfs.openDownloadStream(new mongoose.Types.ObjectId(imageId));
+    imageStream.on('error', (error) => {
+        console.error('Error fetching image:', error);
+        res.status(404).send('Image not found');
+    })
+
+    imageStream.pipe(res)
+})
+
+exports.getCart = RouterAsyncErrorHandler(async (req, res, next) => {
+    res.json(req.user.cart)
 })

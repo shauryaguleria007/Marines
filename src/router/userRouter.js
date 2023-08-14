@@ -9,7 +9,9 @@ const { loginUser,
     sendVerificationMail,
     validateVerificationMail,
     authenticateUser,
-    removeFromCart } = require("../controller/userController")
+    getFile,
+    removeFromCart,
+    getCart } = require("../controller/userController")
 const { routeCredentialValidator } = require("../middleware/routeCredentialValidator")
 
 
@@ -45,6 +47,8 @@ Router.route("/login").post([
     })
 ], routeCredentialValidator, loginUser)
 
+Router.route("/cart/data").get(passport.authenticate(["userJwtStrategy"], { session: false }), getCart)
+
 
 Router.route("/cart/add").post(
     passport.authenticate(["userJwtStrategy"], { session: false }),
@@ -72,5 +76,9 @@ Router.route("/verification/verify").get([
     validateVerificationMail)
 
 Router.route("/authenticate").get(passport.authenticate(["userJwtStrategy", "sellerJwtStrategy"], { session: false }), authenticateUser)
+
+Router.route("/image/:imageId").get([
+    check("imageId").exists().isMongoId()
+], routeCredentialValidator, getFile)
 
 module.exports = Router
