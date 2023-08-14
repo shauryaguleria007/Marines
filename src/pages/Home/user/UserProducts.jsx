@@ -1,0 +1,97 @@
+import React, { useEffect } from 'react'
+import { useGetAllProductQuery } from "../../../store/services/productApi"
+import { Loading2 } from "../../../components/Loading2"
+import { Stack, Card, CardMedia, CardActions, Button, CardContent, Typography, Box } from "@mui/material"
+import { getUser } from "../../../store/store"
+import { useNotificationContext } from "../../../context/notificationContext"
+import { useAddTocartMutation } from '../../../store/services/userApi'
+
+export const UserProducts = () => {
+    const { data, error, isLoading } = useGetAllProductQuery()
+
+    useEffect(() => {
+        if (data) console.log(data)
+        if (error) console.log(error)
+    }, [data, error])
+
+    if (isLoading) return <Loading2 />
+
+    return (
+
+        <Stack direction="row" sx={{
+            flexWrap: "wrap",
+            my: 5,
+            alignItem: "space-evenly",
+            justifyContent: "space-evenly",
+        }} gap={5}>
+
+            {
+                data?.map((product) => {
+                    const imageUrl = product?.images.length !== 0 ? `${import.meta.env.VITE_SETVER_URL}/api/user/image/${product.images[0]}` : ""
+                    return <Product product={product} key={product._id} imageUrl={imageUrl} />
+                })
+            }
+        </Stack>
+    )
+}
+
+
+
+
+const Product = ({ product, imageUrl }) => {
+    const user = getUser()
+    const { notification, addNotification } = useNotificationContext()
+    const [addToCartApi, { data, error }] = useAddTocartMutation()
+
+
+    useEffect(() => {
+        if (data) addNotification(`${product.name} added to cart `, notification.sevierity.success)
+        if (error) addNotification(`${product.name} not added .Try again`, notification.sevierity.error)
+
+    }, [data, error])
+    const addTocart = () => {
+        if (!user) {
+            addNotification("please login first .", notification.sevierity.warning)
+            return
+        }
+        addToCartApi({ productId: product._id, quantity: 1 })
+    }
+
+    return <Box sx={{
+        flexBasis: "15%",
+        display: "flex",
+        justifyContent: "center",
+    }}><Card key={product._id} sx={{
+        minHeight: 150,
+        maxWidth: 250,
+        minWidth: 250,
+
+    }} elevation={3}>
+            <CardMedia
+                component="img"
+                alt="green iguana"
+                height="130"
+                image={imageUrl}
+            />
+
+            <CardContent sx={{
+                backgroundImage: "url(/logo.jpg)",
+                backgroundPosition: "right center",
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "contain",
+            }}>
+                <Typography gutterBottom variant="h5" component="div">
+                    {
+                        product.name
+                    }
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    {product.description}
+                </Typography>
+            </CardContent>
+            <CardActions>
+                <Button size="small" variant="contained" onClick={addTocart}> Add to cart</Button>
+            </CardActions>
+        </Card>
+    </Box>
+}

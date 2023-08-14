@@ -10,21 +10,27 @@ import { SellerProducts } from "./pages/Home/Seller/SellerProducts"
 import { SellerOrders } from "./pages/Home/Seller/SellerOrders"
 import { Snackbar, Alert } from "@mui/material"
 import { useNotificationContext } from "./context/notificationContext"
+import { UserHome } from "./pages/Home/user/UserHome"
+
 export const App = () => {
 
   const { notification, resetNotification } = useNotificationContext()
 
   return <>
     <Snackbar open={notification.activate} autoHideDuration={4000} onClose={resetNotification}>
-      <Alert onClose={resetNotification} severity="success" sx={{ width: '100%' }}>
+      <Alert onClose={resetNotification} severity={notification.type} sx={{ width: '100%' }}>
         {notification?.message}
       </Alert>
-    </Snackbar>
+    </Snackbar >
     <BrowserRouter>
       <Routes>
         <Route path="/login" Component={Login} />
+
+
         <Route path="/" Component={Authorizer} >
-          <Route path="/user" Component={UserAuthorizer}></Route>
+          <Route path="/user" Component={UserAuthorizer}>
+            <Route path="/user/" Component={UserHome} />
+          </Route>
 
           <Route path="/seller" Component={SellerAuthorizer}>
             <Route path="/seller" Component={SellerHome} >
@@ -32,6 +38,8 @@ export const App = () => {
               <Route path="/seller/orders" Component={SellerOrders} />
             </Route>
           </Route>
+
+
           <Route path="/admin" Component={AdminAuthorizer}></Route>
         </Route>
         <Route path="/register/user" Component={UserRegister} />

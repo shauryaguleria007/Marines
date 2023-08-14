@@ -19,8 +19,23 @@ export const userApi = createApi({
     endpoints: (builder) => ({
         AutenticateUser: builder.query({
             query: () => "/authenticate",
-            keepUnusedDataFor: 0.001,
+            keepUnusedDataFor: 0.1,
 
+        }),
+        getCartData: builder.query({
+            query: () => "/cart/data",
+            providesTags: ["getCart"],
+            keepUnusedDataFor: 0.1,
+
+        }),
+        addTocart: builder.mutation({
+            query: (body) => ({
+                url: "/cart/add",
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["getCart"],
+            keepUnusedDataFor: 0.1,
         }),
         LoginUser: builder.mutation({
             query: (body) => ({
@@ -28,7 +43,7 @@ export const userApi = createApi({
                 method: "POST",
                 body
             }),
-            keepUnusedDataFor: 0.001,
+            keepUnusedDataFor: 0.1,
         }),
         RegisterUser: builder.mutation({
             query: (body) => ({
@@ -36,7 +51,7 @@ export const userApi = createApi({
                 method: "POST",
                 body
             }),
-            keepUnusedDataFor: 0.001,
+            keepUnusedDataFor: 0.1,
         }),
         RegisterSeller: builder.mutation({
             query: (body) => ({
@@ -44,7 +59,7 @@ export const userApi = createApi({
                 method: "POST",
                 body: { ...body, role: "SELLER" }
             }),
-            keepUnusedDataFor: 0.001,
+            keepUnusedDataFor: 0.1,
         }),
     })
 }
@@ -55,5 +70,7 @@ export const {
     useAutenticateUserQuery,
     useLoginUserMutation,
     useRegisterSellerMutation,
-    useRegisterUserMutation
+    useRegisterUserMutation,
+    useLazyGetCartDataQuery,
+    useAddTocartMutation
 } = userApi

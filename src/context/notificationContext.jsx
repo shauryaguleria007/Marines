@@ -1,5 +1,5 @@
 import { NotificationAdd } from '@mui/icons-material';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const notificationContext = createContext()
 
@@ -16,7 +16,6 @@ export const NotificationContextProvider = ({ children }) => {
         }
     })
 
-   
 
     const addNotification = (message = "operatin successful", type = "success") => setNotification((state) => {
         return { ...state, activate: true, message, type }

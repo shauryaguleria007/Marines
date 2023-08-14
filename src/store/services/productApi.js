@@ -25,13 +25,30 @@ export const productApi = createApi({
                 body: { ...body }
             }),
             invalidatesTags: ["getProduct"],
-            keepUnusedDataFor: 0.001,
+            keepUnusedDataFor: 0.1,
         }),
 
         getSellerProduct: builder.query({
             query: (user, limit = 0, page = 0) => `/info/all?page=${page}&limit=${limit}&sellerId=${user}`,
             providesTags: ["getProduct"],
-            keepUnusedDataFor: 0.001,
+            keepUnusedDataFor: 0.1,
+        }),
+        getAllProduct: builder.query({
+            query: (limit = 0, page = 0) => `/info/all?page=${page}&limit=${limit}`,
+            providesTags: ["getProduct"],
+            keepUnusedDataFor: 0.1,
+        }),
+        addImage: builder.mutation({
+            query: ({ id, formData }) => {
+                console.log(formData);
+                return ({
+                    url: `/upload/${id}`,
+                    method: "POST",
+                    body: formData
+                })
+            },
+            invalidatesTags: ["getProduct"],
+            keepUnusedDataFor: 0.1,
         }),
     }),
 })
@@ -40,5 +57,7 @@ export const productApi = createApi({
 
 export const {
     useAddProductMutation,
-    useLazyGetSellerProductQuery
+    useLazyGetSellerProductQuery,
+    useAddImageMutation,
+    useGetAllProductQuery
 } = productApi

@@ -7,11 +7,13 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button, Stack, Box, Modal, Typography, TextField } from '@mui/material'
-import { useAddProductMutation } from '../../../store/services/productApi';
+import { useAddImageMutation, useAddProductMutation } from '../../../store/services/productApi';
 import { useNotificationContext } from "../../../context/notificationContext"
 import { useLazyGetSellerProductQuery } from '../../../store/services/productApi';
 import { getUser } from "../../../store/store"
 import { Loading2 } from "../../../components/Loading2"
+import { MuiFileInput } from "mui-file-input"
+
 
 export const SellerProducts = () => {
 
@@ -25,15 +27,6 @@ export const SellerProducts = () => {
     useEffect(() => {
         if (user.id) getSellerProducts(user.id)
     }, [user])
-
-
-    useEffect(() => {
-        if (data) {
-            console.log(data);
-        }
-        if (error)
-            console.log(error);
-    }, [data, error])
 
 
     return (
@@ -53,7 +46,7 @@ export const SellerProducts = () => {
                             <TableCell>Product Name</TableCell>
                             <TableCell align="right">Price</TableCell>
                             <TableCell align="right">Stock</TableCell>
-                            <TableCell align="right">Delivered</TableCell>
+                            <TableCell align="right">total sold</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -69,17 +62,20 @@ export const SellerProducts = () => {
                             </TableRow> : ""
 
                         }
-                        {data?.map((row) => (
-                            <TableRow
+                        {data?.map((row) => {
+                            console.log(data)
+                            return <TableRow
                                 key={row._id}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                                 <TableCell component="th" scope="row">{row.name}</TableCell>
-                                <TableCell align="right">{row.name}</TableCell>
                                 <TableCell align="right">{row.price}</TableCell>
                                 <TableCell align="right">{row.stock}</TableCell>
+                                <TableCell align="right">{row.stock}</TableCell>
+
                             </TableRow>
-                        ))}
+
+                        })}
                     </TableBody>
                 </Table>
             </TableContainer>
@@ -117,6 +113,11 @@ const style = {
 const ModalForm = ({ open, handleClose }) => {
     const [addProductApi, { data, error, isLoading }] = useAddProductMutation()
     const { notification, addNotification } = useNotificationContext()
+    const [addImageApi, { data: imageData, error: imageError, isLoading: ImageLoading }] = useAddImageMutation()
+
+    const [value, setValue] = React.useState([])
+
+
 
     const [formData, setFormData] = useState({
         name: "",
@@ -127,7 +128,6 @@ const ModalForm = ({ open, handleClose }) => {
     const addProduct = async (e) => {
         e.preventDefault()
         await addProductApi({ ...formData })
-        console.log(formData);
     }
 
 
@@ -140,10 +140,43 @@ const ModalForm = ({ open, handleClose }) => {
                 stock: 0,
                 description: ""
             })
-            handleClose()
+            if (value.length === 0) {
+                handleClose()
+                setValue([])
+            }
+            if (data?.id && value.length !== 0) {
+                const formData = new FormData()
+                value.map((file) => { formData.append("image", file) })
+                addImageApi({ id: data.id, formData })
+            }
+
         }
-        if (error) { console.log(error); }
+        if (error) {
+            addNotification(`invalid data `, notification?.sevierity.error)
+            console.log(error);
+        }
     }, [data, error])
+
+
+    useEffect(() => {
+        if (imageData) {
+            handleClose()
+            setValue([])
+        }
+        if (imageError) {
+            addNotification(`image not  uploaded ,try again . `, notification?.sevierity.error)
+            console.log(imageError);
+        }
+    }, [
+        imageData, imageError
+    ])
+
+    const handleChange = (newValue) => {
+        setValue(newValue)
+    }
+
+
+
     return (
         <Modal
             open={open}
@@ -169,16 +202,7 @@ const ModalForm = ({ open, handleClose }) => {
                         </Stack>
                         < TextField type="text" label="description" value={formData.description} onChange={(e) => setFormData((data) => ({ ...data, description: e.target.value }))} size="small" variant="filled" sx={{ width: "66.6%" }} multiline maxRows={3}
                         />
-                        {/* <Button
-                            variant="contained"
-                            component="label" */}
-                        {/* > */}
-                        {/* Upload File
-                            <input
-                                type="file"
-                                hidden
-                            />
-                        </Button> */}
+                        <MuiFileInput value={value} onChange={handleChange} multiple />
                         <Stack justifyContent={"space-evenly"} direction="row" sx={{
                             width: 1
                         }}>

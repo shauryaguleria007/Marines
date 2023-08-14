@@ -15,20 +15,20 @@ export const Authorizer = () => {
     const location = useLocation()
     useEffect(() => {
         if (data) {
-            const path = data.role === "SELLER" ? "/seller" : "/user"
             dispatch(setUser(data))
+            const path = data.role === "SELLER" ? "/seller" : "/user"
             if (location.pathname === path) return
             return navigate(`${path}`)
         }
         if (error) {
-            console.log(error)
-            return navigate("/login")
+            if (location.pathname === "/user") return
+            return navigate("/user")
         }
     }, [
         data, error
     ])
 
-    if (data) return <>
+    if (data || location.pathname === "/user") return <>
         <Box sx={{
             height: "99.8vh",
             width: "99.8vw",
@@ -49,10 +49,10 @@ export const UserAuthorizer = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (!user) return
+        if (!user || location.pathname === "/user") return
         if (user.role !== "USER") return navigate("/login")
     }, [user])
-    if (!user) return <Loading />
+    if (!user && location.pathname !== "/user") return <Loading />
     return <Outlet />
 }
 
