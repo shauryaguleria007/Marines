@@ -20,11 +20,14 @@ export const userSlice = createSlice({
                 role: action.payload.role,
                 id: action.payload.id
             }
+        },
+        clearState: (state) => {
+            return initialState
         }
     }
 })
 
 
 
-export const { setUser } = userSlice.actions
+export const { setUser, clearState } = userSlice.actions
 export default userSlice.reducer

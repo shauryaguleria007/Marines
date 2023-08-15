@@ -11,6 +11,7 @@ import { SellerOrders } from "./pages/Home/Seller/SellerOrders"
 import { Snackbar, Alert } from "@mui/material"
 import { useNotificationContext } from "./context/notificationContext"
 import { UserHome } from "./pages/Home/user/UserHome"
+import { Cart } from "./pages/cart/Cart"
 
 export const App = () => {
 
@@ -30,6 +31,7 @@ export const App = () => {
         <Route path="/" Component={Authorizer} >
           <Route path="/user" Component={UserAuthorizer}>
             <Route path="/user/" Component={UserHome} />
+            <Route path="/user/cart" Component={Cart} />
           </Route>
 
           <Route path="/seller" Component={SellerAuthorizer}>

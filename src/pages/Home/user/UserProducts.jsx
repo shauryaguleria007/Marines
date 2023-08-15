@@ -9,10 +9,6 @@ import { useAddTocartMutation } from '../../../store/services/userApi'
 export const UserProducts = () => {
     const { data, error, isLoading } = useGetAllProductQuery()
 
-    useEffect(() => {
-        if (data) console.log(data)
-        if (error) console.log(error)
-    }, [data, error])
 
     if (isLoading) return <Loading2 />
 

@@ -15,7 +15,6 @@ export const productApi = createApi({
             return Headers
         }
     }),
-
     endpoints: (builder) => ({
 
         addProduct: builder.mutation({
@@ -33,9 +32,13 @@ export const productApi = createApi({
             providesTags: ["getProduct"],
             keepUnusedDataFor: 0.1,
         }),
+        getProductById: builder.query({
+            query: (id) => `/info/${id}`,
+            providesTags: (result, error, id) => { return [{ type: 'PID', id }] },
+            keepUnusedDataFor: 0.1,
+        }),
         getAllProduct: builder.query({
             query: (limit = 0, page = 0) => `/info/all?page=${page}&limit=${limit}`,
-            providesTags: ["getProduct"],
             keepUnusedDataFor: 0.1,
         }),
         addImage: builder.mutation({
@@ -59,5 +62,6 @@ export const {
     useAddProductMutation,
     useLazyGetSellerProductQuery,
     useAddImageMutation,
-    useGetAllProductQuery
+    useGetAllProductQuery,
+    useLazyGetProductByIdQuery
 } = productApi

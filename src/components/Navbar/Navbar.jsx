@@ -1,27 +1,45 @@
 import React, { useEffect } from 'react'
 import { AppBar, Typography, Box, Toolbar, IconButton, Tooltip, Badge, Button } from "@mui/material"
 import { getUser } from '../../store/store'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-import { useLazyGetCartDataQuery } from '../../store/services/userApi';
+import { useDispatch } from 'react-redux';
+import { clearState } from '../../store/features/userSlice';
+import { useLazyGetCartDataQuery } from '../../store/services/userApi'
 
 
 export const Navbar = () => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const logout = () => {
+        // dispatch(api.util.resetApiState());
+        localStorage.removeItem("Authorization")
+        dispatch(clearState())
+        return navigate("/user")
+    }
 
     const [getCart, { data }] = useLazyGetCartDataQuery()
     const user = getUser()
 
     useEffect(() => {
-        console.log("jeres");
-        console.log(user);
         if (user && user.role === "USER") {
-            console.log("here");
             getCart()
         }
     }, [user])
 
+    const LogOut = async () => {
+
+    }
+
     const addUserLinks = () => {
         return <>
+            <Link to="/user" style={{
+                textDecoration: "none",
+                color: "white"
+            }}>
+                <Typography variant="h6" >Home</Typography>
+            </Link>
             <Link to="/contact" style={{
                 textDecoration: "none",
             }}>
@@ -40,15 +58,15 @@ export const Navbar = () => {
     const addCartAndLogin = () => {
         if (!user) return <Link to={"/login"}><Button variant='outlined' size='large' color='secondary'><Typography color={"white"}>Login</Typography></Button></Link>
         if (user.role === "USER") return <>
-            <IconButton size="large" sx={{ color: "white", mr: 6 }}>
-                <Badge badgeContent={data ? data.total : 0} color='secondary' showZero>
+            <Link to="/user/cart">  <IconButton size="large" sx={{ color: "white", mr: 6 }}>
+                <Badge badgeContent={data ? data.total : 0} color='secondary' >
                     <ShoppingBagIcon fontSize="large" />
                 </Badge>
-            </IconButton>
-            <Button variant='outlined' size='large' color='secondary'><Typography color={"white"}>Logout</Typography></Button>
+            </IconButton> </Link>
+            <Button variant='outlined' size='large' color='secondary'><Typography color={"white"} onClick={logout}> Logout</Typography></Button >
         </>
 
-        if (user.role === "SELLER") return <Button variant='outlined' size='large' color='secondary'><Typography color={"white"}>Logout</Typography></Button>
+        if (user.role === "SELLER") return <Button variant='outlined' size='large' color='secondary'><Typography color={"white"} onClick={logout}>Logout</Typography></Button>
     }
 
     return <>
@@ -63,11 +81,11 @@ export const Navbar = () => {
                 >
                     <img src={"/logo.jpg"} alt="" style={{ "height": "100px", "width": "100px", "borderRadius": "50%" }} />
                 </IconButton>
+                {/* <Link to={"/user"} style={{ textDecoration: "none" }}> */}
                 <Typography
                     variant="h4"
                     noWrap
                     component="a"
-                    href="/"
                     sx={{
                         mr: 2,
                         ml: 4,
@@ -75,12 +93,13 @@ export const Navbar = () => {
                         fontFamily: 'monospace',
                         fontWeight: 900,
                         letterSpacing: '.3rem',
-                        color: 'inherit',
+                        color: 'white',
                         textDecoration: 'none',
                     }}
                 >
                     Apni Mandi
                 </Typography>
+                {/* </Link> */}
                 <Box sx={{ flexGrow: 0.9, display: "flex", gap: 3, ml: 5 }}>
                     {
                         user?.role === "USER" ? addUserLinks() : ""

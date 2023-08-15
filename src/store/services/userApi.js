@@ -37,6 +37,15 @@ export const userApi = createApi({
             invalidatesTags: ["getCart"],
             keepUnusedDataFor: 0.1,
         }),
+        removeFromcart: builder.mutation({
+            query: (body) => ({
+                url: "/cart/remove",
+                method: "POST",
+                body
+            }),
+            invalidatesTags: ["getCart"],
+            keepUnusedDataFor: 0.1,
+        }),
         LoginUser: builder.mutation({
             query: (body) => ({
                 url: "/login",
@@ -72,5 +81,7 @@ export const {
     useRegisterSellerMutation,
     useRegisterUserMutation,
     useLazyGetCartDataQuery,
-    useAddTocartMutation
+    useAddTocartMutation,
+    useGetCartDataQuery,
+    useRemoveFromcartMutation
 } = userApi
