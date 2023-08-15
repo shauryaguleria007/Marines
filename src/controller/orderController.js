@@ -3,34 +3,30 @@ const { ProductModal } = require("../modal/productModel")
 const { RouterAsyncErrorHandler } = require("../middleware/ErrorHandler/MiddlewareErrorHandlers")
 const { Router } = require("express")
 const mongoose = require("mongoose")
+const { UserModal } = require("../modal/userModal")
 
 exports.createOrder = RouterAsyncErrorHandler(async (req, res, next) => {
-    const { cartId } = req.body
-
     const user = req.user
+    const cart = user.cart
+    cart.data.map(async (cartOrder) => {
+        const product = await ProductModal.findById(cartOrder.product)
+        if (!product) throw new Error()
+        if (product.stock < cartOrder.quantity) throw new Error()
+        const order = await OrderModal.create({
+            user: user.id,
+            seller: product.seller,
+            product: product.id,
+            quantity: cartOrder.quantity,
+            bill_amount: product.price * cartOrder.quantity
+        })
+        if (!order) throw new Error()
 
-    const cartOrder = user.cart.find(ord => ord.id === cartId)
-    const product = await ProductModal.findById(cartOrder.product)
-    if (!product) throw new Error()
-    if (product.stock < cartOrder.quantity) throw new Error()
-
-
-    const order = await OrderModal.create({
-        user: user.id,
-        seller: product.seller,
-        product: product.id,
-        quantity: cartOrder.quantity,
-        bill_amount: product.price * cartOrder.quantity
+        await product.updateOne({ stock: product.stock - order.quantity })
     })
-    if (!order) throw new Error()
-
-    await product.updateOne({ stock: product.stock - 1 })
 
     await user.updateOne({
-        $pull: { cart: { product: product.id } }
+        $unset: { cart: {} }
     })
-
-
     res.json({ success: true })
 })
 

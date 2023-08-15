@@ -11,12 +11,7 @@ const { routeCredentialValidator } = require("../middleware/routeCredentialValid
 
 const Router = express.Router()
 
-Router.route("/add").post(passport.authenticate(["userJwtStrategy"], { session: false }),
-    [
-        check("cartId").exists().isMongoId()
-    ],
-    routeCredentialValidator,
-    createOrder)
+Router.route("/add").post(passport.authenticate(["userJwtStrategy"], { session: false }), createOrder)
 
 
 Router.route("/get/all").post(

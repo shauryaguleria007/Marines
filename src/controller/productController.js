@@ -23,7 +23,10 @@ exports.getAllProducts = RouterAsyncErrorHandler(async (req, res, next) => {
 })
 
 exports.getProductsById = RouterAsyncErrorHandler(async (req, res, next) => {
-
+    const { productId } = req.params
+    const product = await ProductModal.findById(productId)
+    if (!product) throw new Error()
+    res.json(product)
 })
 
 exports.addFileData = RouterAsyncErrorHandler(async (req, res, next) => {

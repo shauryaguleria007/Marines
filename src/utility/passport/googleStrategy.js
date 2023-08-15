@@ -5,6 +5,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy
 const { isBuffer } = require("util")
 const { UserModal } = require("../../modal/userModal")
 const { SellerModal } = require("../../modal/sellerModal")
+const { log } = require("console")
 
 
 
@@ -13,8 +14,21 @@ exports.enableUserGoogleStrategy = (passport) => {
 
     const authenticateUser = async (accessToken, refreshToken, profile, done) => {
         const { name, email } = profile._json
-        let user = await UserModal.findOne({ email })
-        if (user) return done(null, user)
+        let user = await UserModal.findOne({ email }).select(["+password"])
+        if (user) {
+            if (!user.verified && !!user.password) {
+                await user.updateOne({
+                    $set: { verified: true },
+                    $push: { authentication: "OAUTH" }
+                })
+
+                const newUser = await UserModal.findOne({ email })
+
+                return done(null, newUser)
+
+            }
+            return done(null, user)
+        }
 
         user = await UserModal.create({ name, email, authentication: ["OAUTH"], verified: true })
         if (user) return done(null, user)
@@ -39,8 +53,21 @@ exports.enableSellerGoogleStrategy = (passport) => {
 
     const authenticateUser = async (accessToken, refreshToken, profile, done) => {
         const { name, email } = profile._json
-        let user = await SellerModal.findOne({ email })
-        if (user) return done(null, user)
+        let user = await SellerModal.findOne({ email }).select(["+password"])
+        if (user) {
+            if (!user.verified && !!user.password) {
+                console.log("user");
+                await user.updateOne({
+                    $set: { verified: true },
+                    $push: { authentication: "OAUTH" }
+                })
+                const newUser = await UserModal.findOne({ email })
+                return done(null, newUser)
+
+            }
+
+            return done(null, user)
+        }
 
         user = await SellerModal.create({ name, email, authentication: ["OAUTH"], verified: true })
         if (user) return done(null, user)

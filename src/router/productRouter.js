@@ -1,7 +1,8 @@
 const { createProduct,
     uploadFile,
     addFileData,
-    getAllProducts
+    getAllProducts,
+    getProductsById
 } = require('../controller/productController')
 
 const { routeCredentialValidator } = require("../middleware/routeCredentialValidator")
@@ -40,4 +41,8 @@ Router.route("/info/all").get([
     check("limit").optional().isNumeric(),
     check("sellerId").optional().isMongoId()
 ], routeCredentialValidator, getAllProducts)
+
+Router.route("/info/:productId").get([
+    check("productId").exists().isMongoId()
+], routeCredentialValidator, getProductsById)
 module.exports = Router

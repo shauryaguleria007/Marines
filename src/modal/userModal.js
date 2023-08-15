@@ -37,6 +37,10 @@ const userSchema = new mongoose.Schema({
             type: Number,
             default: 0
         },
+        price: {
+            type: Number,
+            default: 0
+        },
         data: [{
             product: {
                 type: mongoose.Types.ObjectId,
@@ -47,6 +51,14 @@ const userSchema = new mongoose.Schema({
                 type: Number,
                 default: 0,
                 required: true
+            },
+            name: {
+                type: String,
+                required: true
+            },
+            price: {
+                type: Number,
+                default: 0
             }
         }]
     },

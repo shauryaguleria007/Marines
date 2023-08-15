@@ -81,11 +81,10 @@ exports.addToCart = RouterAsyncErrorHandler(async (req, res, next) => {
     if (product.stock <= 0) throw new Error()
     const cartProduct = req.user.cart.data.find(pro => pro.product.toString() === productId)
     if (cartProduct) cartProduct.quantity += Number(quantity)
-    else req.user.cart.data.push({ product: productId, quantity })
+    else req.user.cart.data.push({ product: productId, quantity, name: product.name, price: product.price })
     req.user.cart.total += 1
+    req.user.cart.price += product.price
     await req.user.save()
-    product.stock -= 1
-    await product.save()
     res.json({
         success: true
     })
@@ -93,13 +92,24 @@ exports.addToCart = RouterAsyncErrorHandler(async (req, res, next) => {
 
 exports.removeFromCart = RouterAsyncErrorHandler(async (req, res, next) => {
     const { productId } = req.body
-    await req.user.updateOne({ $pull: { cart: { product: productId } } })
+    const user = req.user
+    const getProduct = await ProductModal.findById(productId)
+    if (!getProduct) throw new Error()
+    const product = user.cart.data.find(pro => pro.product.toString() === productId)
+    const newTotal = user.cart?.total - product.quantity
+    await user.updateOne({
+        $set: {
+            "cart.total": newTotal,
+            "cart.price": user.cart.price - (product.quantity * getProduct.price)
+        },
+        $pull: { "cart.data": { product: productId } }
+    })
     res.json({ success: true })
 })
 
 exports.sendVerificationMail = RouterAsyncErrorHandler(async (req, res, next) => {
     const user = req.user
-    if (user.verified) throw new Error()
+    if (user.verified) return res.redirect(`${process.env.CLIENT_URL}/`)
     const token = await user.addVerificationToken()
     await verificationMail({
         email: user.email,
@@ -119,7 +129,7 @@ exports.validateVerificationMail = RouterAsyncErrorHandler(async (req, res, next
     user.verified = true
     await user.save()
     //redirect on email verification .
-    res.json({ success: true })
+    res.redirect(`${process.env.CLIENT_URL}`)
 })
 
 
