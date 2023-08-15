@@ -16,7 +16,7 @@ export const UserProducts = () => {
 
         <Stack direction="row" sx={{
             flexWrap: "wrap",
-            my: 5,
+            // my: 5,
             alignItem: "space-evenly",
             justifyContent: "space-evenly",
         }} gap={5}>
@@ -54,7 +54,7 @@ const Product = ({ product, imageUrl }) => {
     }
 
     return <Box sx={{
-        flexBasis: "15%",
+        flexBasis: "25%",
         display: "flex",
         justifyContent: "center",
     }}><Card key={product._id} sx={{
@@ -62,7 +62,7 @@ const Product = ({ product, imageUrl }) => {
         maxWidth: 250,
         minWidth: 250,
 
-    }} elevation={3}>
+    }} elevation={20}>
             <CardMedia
                 component="img"
                 alt="green iguana"

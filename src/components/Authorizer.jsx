@@ -8,6 +8,12 @@ import { getUser } from "../store/store"
 import { Navbar } from "./Navbar/Navbar"
 import { Box } from "@mui/material"
 import { Footer } from "../components/Footer"
+import { EmailVerificartion } from "./EmailVerificartion"
+
+
+
+
+
 export const Authorizer = () => {
     const { data, error, isLoading } = useAutenticateUserQuery()
     const dispatch = useDispatch()
@@ -15,6 +21,7 @@ export const Authorizer = () => {
     const location = useLocation()
     useEffect(() => {
         if (data) {
+            console.log(data);
             dispatch(setUser(data))
             const path = data.role === "SELLER" ? "/seller" : "/user"
             if (location.pathname === path) return
@@ -39,6 +46,7 @@ export const Authorizer = () => {
             <Navbar />
             <Outlet />
             <Footer />
+            {data ? <EmailVerificartion verified={data?.verified} /> : ""}
         </Box>
     </>
     return <Loading />

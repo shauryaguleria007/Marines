@@ -6,11 +6,14 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import { useDispatch } from 'react-redux';
 import { clearState } from '../../store/features/userSlice';
 import { useLazyGetCartDataQuery } from '../../store/services/userApi'
+import { useNotificationContext } from '../../context/notificationContext';
+
 
 
 export const Navbar = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const { inView } = useNotificationContext()
 
     const logout = () => {
         // dispatch(api.util.resetApiState());
@@ -70,7 +73,7 @@ export const Navbar = () => {
     }
 
     return <>
-        <AppBar position="static" sx={{ m: 0 }}>
+        <AppBar position={inView ? "static" : "sticky"} sx={{ m: 0 }}>
             <Toolbar disableGutters>
                 <IconButton
                     size="large"

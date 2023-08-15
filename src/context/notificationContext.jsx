@@ -1,9 +1,12 @@
 import { NotificationAdd } from '@mui/icons-material';
 import { createContext, useContext, useState, useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 const notificationContext = createContext()
 
 export const NotificationContextProvider = ({ children }) => {
+    const { ref, inView } = useInView();
+
     const [notification, setNotification] = useState({
         activte: false,
         message: "",
@@ -32,7 +35,9 @@ export const NotificationContextProvider = ({ children }) => {
         <notificationContext.Provider value={{
             notification,
             addNotification,
-            resetNotification
+            resetNotification,
+            ref,
+            inView
         }}>
             {
                 children

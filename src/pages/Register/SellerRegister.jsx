@@ -96,7 +96,7 @@ export const SellerRegister = () => {
                             <Button variant='contained' onClick={googleRegister} >google</Button>
                             {/* startIcon={<GoogleIcon />}  Button component prop*/}
                         </Stack>
-                        <Link to="/login" style={{ textDecoration: "none" }}>Already have an account ? Login</Link>
+                        <Link to="/login/seller" style={{ textDecoration: "none" }}>Already have an account ? Login</Link>
                         <Link to="/register/user" style={{ textDecoration: "none" }}>create a customer account</Link>
                     </Stack>
                 </form>

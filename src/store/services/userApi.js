@@ -15,10 +15,21 @@ export const userApi = createApi({
             return Headers
         }
     }),
+    tagTypes: ["getCart", "AUTHENTICATE"],
 
     endpoints: (builder) => ({
         AutenticateUser: builder.query({
             query: () => "/authenticate",
+            providesTags: ["AUTHENTICATE"],
+            keepUnusedDataFor: 0.1,
+
+        }),
+        emailVerification: builder.mutation({
+            query: () => ({
+                url: "/verification/send",
+                method: "GET",
+            }),
+            invalidatesTags: ["AUTHENTICATE"],
             keepUnusedDataFor: 0.1,
 
         }),
@@ -83,5 +94,6 @@ export const {
     useLazyGetCartDataQuery,
     useAddTocartMutation,
     useGetCartDataQuery,
-    useRemoveFromcartMutation
+    useRemoveFromcartMutation,
+    useEmailVerificationMutation
 } = userApi

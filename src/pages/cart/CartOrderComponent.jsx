@@ -1,9 +1,23 @@
-import React from 'react'
-import { Stack, Paper, Typography, Box } from '@mui/material'
-
+import React, { useEffect } from 'react'
+import { Stack, Paper, Typography, Box, Button } from '@mui/material'
+import { useCreateOrderMutation } from '../../store/services/orderApi';
+import { useNotificationContext } from "../../context/notificationContext"
+import { userApi } from "../../store/services/userApi"
+import { useDispatch } from 'react-redux';
 
 export const CartOrderComponent = ({ data }) => {
-    console.log(data);
+    const [createOrder, { data: orderData, isLoading }] = useCreateOrderMutation()
+    const { notification, addNotification } = useNotificationContext()
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (orderData) {
+            dispatch(userApi.util.invalidateTags(["getCart"]))
+            addNotification("orders created ", notification.sevierity.success)
+
+        }
+    }, [orderData])
+
     return (
         <Paper sx={{
             flexBasis: "23%",
@@ -27,9 +41,9 @@ export const CartOrderComponent = ({ data }) => {
                     height: 0.5,
                     width: 0.9,
                     overflowY: "scroll",
-                    "::-webkit-scrollbar": {
-                        display: "none"
-                    }
+                    // "::-webkit-scrollbar": {
+                    //     display: "none"
+                    // }
                 }}>
                     {
                         data?.data.map(product => {
@@ -48,6 +62,9 @@ export const CartOrderComponent = ({ data }) => {
                 <Typography variant='h6'>
                     Total : {data.price}
                 </Typography>
+                <Button variant='outlined' onClick={() => createOrder()} disabled={isLoading}>
+                    Order
+                </Button>
             </Stack>
         </Paper >
     )
