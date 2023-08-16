@@ -1,6 +1,7 @@
 import React from 'react'
 import "./userCSS.css"
 import { Stack, Paper, Typography, Box, Button } from "@mui/material"
+import { Link } from "react-router-dom"
 import { useNotificationContext } from '../../../context/notificationContext'
 export const UserFeaturtes = () => {
     const { videoRef } = useNotificationContext()
@@ -26,10 +27,10 @@ export const UserFeaturtes = () => {
                     < Typography sx={{
                         width: 0.8
                     }} variant="h5" fontWeight={100} color="white">It is important to look for freshness in all vegetables we consume. Check the characteristic signs of freshness such as bright, lively color in the vegetable and look to see if the vegetable is crisp and free of soft spots. Vegetables are at their peak during their harvest season, this is also when vegetables are the most affordable to purchase.</Typography>
-                    <Box  m={ 4}>
-                        <Button variant='contained' sx={{
+                    <Box m={4}>
+                        <Link to="/about" style={{ textDecoration: "none" }}>   <Button variant='contained' sx={{
                             alignSelf: "left"
-                        }} size={"large"}>About us.</Button>
+                        }} size={"large"}>About us.</Button></Link>
                     </Box>
                 </Stack>
             </Box>
