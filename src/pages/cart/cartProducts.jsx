@@ -64,12 +64,25 @@ const Product = ({ product }) => {
                     alignItems: "center"
                 }} direction={"row"}>
                     <Box sx={{}}>
-                        <Typography variant="body1" color={"primary.dark"} sx={{ fontFamily: "sans-serif" }}>{data?.name}</Typography>
-                        <Typography variant="h5" color={"secondary.dark"}>{data?.description}</Typography>
+                        <Typography variant="body1" color={"primary.dark"} sx={{ fontFamily: "sans-serif" }}><Typography gutterBottom variant="h6" component="div" color={"primary"} fontWeight={600}>
+                            {
+                                product.name
+                            }
+                        </Typography></Typography>
+                        {/* <Typography variant="body2" color={"secondary.dark"}>{data?.description}</Typography> */}
                     </Box>
-                    <Box sx={{}}>${data?.price}</Box>
+                    <Box sx={{}}><Typography gutterBottom variant="subtitle1" component="div" color={"primary"} fontWeight={600}>
+                        Rs        {
+                            product.price
+                        }
+                    </Typography>
+                    </Box>
                     <Box sx={{}}>
-                        {product?.quantity}
+                        <Typography gutterBottom variant="subtitle1" component="div" color={"primary"} fontWeight={600}>
+                            {
+                                product?.quantity
+                            } kg
+                        </Typography>
                     </Box>
 
                 </Stack>
