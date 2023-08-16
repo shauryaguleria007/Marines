@@ -55,22 +55,22 @@ export const Navbar = () => {
 
     const addUserLinks = () => {
         return <>
-            <Link to="/user" style={{
+            {location.pathname !== "/user" ? <Link to="/user" style={{
                 textDecoration: "none",
             }}>
                 <Typography variant="h6" color={textColor}>Home</Typography>
-            </Link>
+            </Link> : ""}
             {/* <Link to="/contact" style={{
                 textDecoration: "none",
             }}>
                 <Typography variant="h6" sx={{ color: "white" }}>Contact Us</Typography >
             </Link > */}
 
-            <Link to="/about" style={{
+            {/* <Link to="/about" style={{
                 textDecoration: "none",
             }}>
                 <Typography variant="h6" color={textColor}>About us</Typography>
-            </Link>
+            </Link> */}
         </>
     }
 

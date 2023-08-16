@@ -65,8 +65,8 @@ const Product = ({ product, imageUrl }) => {
     }} elevation={20}>
             <CardMedia
                 component="img"
-                alt="green iguana"
-                height="130"
+                alt={`${product.name}`}
+                height="150"
                 image={imageUrl}
             />
 
