@@ -78,7 +78,7 @@ exports.addToCart = RouterAsyncErrorHandler(async (req, res, next) => {
     const { productId, quantity } = req.body
     const product = await ProductModal.findById(productId)
     if (!product) throw new Error()
-    if (product.stock <= 0) throw new Error()
+    if (product.stock < quantity) throw new Error()
     const cartProduct = req.user.cart.data.find(pro => pro.product.toString() === productId)
     if (cartProduct) cartProduct.quantity += Number(quantity)
     else req.user.cart.data.push({ product: productId, quantity, name: product.name, price: product.price })
