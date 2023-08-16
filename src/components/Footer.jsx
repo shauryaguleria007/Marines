@@ -3,25 +3,25 @@ import { useNotificationContext } from '../context/notificationContext'
 export const Footer = () => {
     const { ref } = useNotificationContext()
     return <>
-        <footer ref={ref} class="foot">
-            <div class="row primary">
-                <div class="column about">
+        <footer className="foot" style={{marginTop:"10px"}}>
+            <div className="row primary">
+                <div className="column about">
                     <h3>Connect</h3>
                     <p>
                         <a
                             href="https://www.google.com/maps/place/Clement+Town,+Dehradun,+Uttarakhand+248002/@30.2681914,77.9905414,14z/data=!3m1!4b1!4m6!3m5!1s0x39092befa7608ead:0xe723fed2168f7a8d!8m2!3d30.2685607!4d78.0071039!16zL20vMGYxOXB2?entry=ttu">
-                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <i className="fa fa-map-marker" aria-hidden="true"></i>
                             Clement Town, DEHRADUN</a>
                     </p>
-                    <div class="social">
-                        <i class="fab fa-facebook-f"></i>
-                        <i class="fab fa-twitter"></i>
-                        <i class="fab fa-linkedin"></i>
-                        <i class="fab fa-instagram"></i>
+                    <div className="social">
+                        <i className="fab fa-facebook-f"></i>
+                        <i className="fab fa-twitter"></i>
+                        <i className="fab fa-linkedin"></i>
+                        <i className="fab fa-instagram"></i>
                     </div>
                 </div>
 
-                <div class="column link">
+                <div className="column link">
                     <h3>Links</h3>
                     <ul>
                         <li><a href="#home">Home</a></li>
@@ -31,7 +31,7 @@ export const Footer = () => {
                     </ul>
                 </div>
 
-                <div class="column subscribe">
+                <div className="column subscribe">
                     <h3>Newsletter</h3>
                     <div>
                         <input type="email" placeholder="Your email id here" />
@@ -41,8 +41,8 @@ export const Footer = () => {
             </div>
         </footer>
         <footer>
-            <div class="row copyright">
-                <div class="footer-menu">
+            <div className="row copyright">
+                <div className="footer-menu">
 
                     <a href="">Home</a>
                     <a href="">F.A.Q</a>

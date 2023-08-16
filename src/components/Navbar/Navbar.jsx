@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { AppBar, Typography, Box, Toolbar, IconButton, Tooltip, Badge, Button } from "@mui/material"
 import { getUser } from '../../store/store'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import { useDispatch } from 'react-redux';
 import { clearState } from '../../store/features/userSlice';
@@ -13,7 +13,38 @@ import { useNotificationContext } from '../../context/notificationContext';
 export const Navbar = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { inView } = useNotificationContext()
+    const user = getUser()
+    const location = useLocation()
+    const { inView, videoInView } = useNotificationContext()
+
+    const [getCart, { data }] = useLazyGetCartDataQuery()
+    const [textColor, setTextColor] = useState("white")
+    const [barColor, setBarColor] = useState("transparent")
+
+    
+    useEffect(() => {
+        setBarColor("transparent")
+        setTextColor("custom1.main")
+    }, [])
+
+    useEffect(() => {
+        if (user && user.role === "USER") {
+            getCart()
+        }
+    }, [user])
+
+
+    useEffect(() => {
+        console.log("here");
+        if (videoInView) {
+            setBarColor("transparent")
+            setTextColor("custom1.main")
+        }
+        else {
+            setBarColor("primary")
+            setTextColor("white")
+        }
+    }, [videoInView])
 
     const logout = () => {
         // dispatch(api.util.resetApiState());
@@ -22,38 +53,23 @@ export const Navbar = () => {
         return navigate("/user")
     }
 
-    const [getCart, { data }] = useLazyGetCartDataQuery()
-    const user = getUser()
-
-    useEffect(() => {
-        if (user && user.role === "USER") {
-            getCart()
-        }
-    }, [user])
-
-    const LogOut = async () => {
-
-    }
-
     const addUserLinks = () => {
         return <>
             <Link to="/user" style={{
                 textDecoration: "none",
-                color: "white"
             }}>
-                <Typography variant="h6" >Home</Typography>
+                <Typography variant="h6" color={textColor}>Home</Typography>
             </Link>
-            <Link to="/contact" style={{
+            {/* <Link to="/contact" style={{
                 textDecoration: "none",
             }}>
                 <Typography variant="h6" sx={{ color: "white" }}>Contact Us</Typography >
-            </Link >
+            </Link > */}
 
             <Link to="/about" style={{
                 textDecoration: "none",
-                color: "white"
             }}>
-                <Typography variant="h6" >About us</Typography>
+                <Typography variant="h6" color={textColor}>About us</Typography>
             </Link>
         </>
     }
@@ -61,19 +77,23 @@ export const Navbar = () => {
     const addCartAndLogin = () => {
         if (!user) return <Link to={"/login"}><Button variant='outlined' size='large' color='secondary'><Typography color={"white"}>Login</Typography></Button></Link>
         if (user.role === "USER") return <>
-            <Link to="/user/cart">  <IconButton size="large" sx={{ color: "white", mr: 6 }}>
+            <Link to="/user/cart">  <IconButton size="large" sx={{ color: textColor, mr: 6 }}>
                 <Badge badgeContent={data ? data.total : 0} color='secondary' >
                     <ShoppingBagIcon fontSize="large" />
                 </Badge>
             </IconButton> </Link>
-            <Button variant='outlined' size='large' color='secondary'><Typography color={"white"} onClick={logout}> Logout</Typography></Button >
+            <Button variant='outlined' size='large' color='secondary'><Typography color={textColor} onClick={logout}> Logout</Typography></Button >
         </>
 
-        if (user.role === "SELLER") return <Button variant='outlined' size='large' color='secondary'><Typography color={"white"} onClick={logout}>Logout</Typography></Button>
+        if (user.role === "SELLER") return <Button variant='outlined' size='large' color='secondary'><Typography color={textColor} onClick={logout}>Logout</Typography></Button>
     }
 
+
+
     return <>
-        <AppBar position={inView ? "static" : "sticky"} sx={{ m: 0 }}>
+        <AppBar position={location.pathname === "/user" ? "fixed" : "static"} sx={{
+            opacity: inView ? 0 : 1
+        }} color={barColor} >
             <Toolbar disableGutters>
                 <IconButton
                     size="large"
@@ -96,7 +116,7 @@ export const Navbar = () => {
                         fontFamily: 'monospace',
                         fontWeight: 900,
                         letterSpacing: '.3rem',
-                        color: 'white',
+                        color: textColor,
                         textDecoration: 'none',
                     }}
                 >

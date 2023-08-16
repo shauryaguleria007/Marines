@@ -6,6 +6,10 @@ const notificationContext = createContext()
 
 export const NotificationContextProvider = ({ children }) => {
     const { ref, inView } = useInView();
+    const { ref: videoRef, inView: videoInView } = useInView({
+        threshold: 0.19,
+    });
+
 
     const [notification, setNotification] = useState({
         activte: false,
@@ -37,7 +41,9 @@ export const NotificationContextProvider = ({ children }) => {
             addNotification,
             resetNotification,
             ref,
-            inView
+            inView,
+            videoRef,
+            videoInView
         }}>
             {
                 children

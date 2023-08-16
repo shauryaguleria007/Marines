@@ -16,6 +16,9 @@ const Theme = createTheme({
     },
     secondary: {
       main: colors.orange[600]
+    },
+    custom1: {
+      main: "rgb(195, 255, 74)"
     }
   },
   typography: {

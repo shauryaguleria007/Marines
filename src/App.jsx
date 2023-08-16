@@ -13,6 +13,7 @@ import { useNotificationContext } from "./context/notificationContext"
 import { UserHome } from "./pages/Home/user/UserHome"
 import { Cart } from "./pages/cart/Cart"
 import { SellerLogin } from "./pages/Login/SellerLogin"
+import { About } from "./pages/About/About"
 
 export const App = () => {
 
@@ -26,6 +27,8 @@ export const App = () => {
     </Snackbar >
     <BrowserRouter>
       <Routes>
+
+        <Route path="/about" Component={About} />
         <Route path="/login" Component={Login} />
         <Route path="/login/seller" Component={SellerLogin} />
 

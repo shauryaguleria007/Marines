@@ -1,0 +1,61 @@
+.heading {
+   text-align: center;
+   padding: 0rem 0;
+   padding-bottom: 2rem;
+   padding-top: 1rem;
+   font-size: 2rem;
+   color: #25262e;
+}
+
+.heading span {
+   background: green;
+   color: rgb(195, 255, 74);
+   display: inline-block;
+   padding: 1rem 1rem;
+   clip-path: polygon(100% 0, 93% 50%, 100% 99%, 0% 100%, 7% 50%, 0% 0%);
+}
+
+
+
+
+
+
+
+
+.box-container .box img {
+   text-decoration: none;
+
+}
+
+/* 
+.box-container .box h3 {
+   font-size: 2rem;
+   line-height: 1.8;
+   color: rgb(1, 56, 1);
+   padding-left: 100px;
+
+}
+
+.box-container .box p {
+   font-size: 0.9rem;
+   line-height: 1.8;
+   color: var(--light-color);
+   padding: 1rem 0;
+} */
+
+
+.img1 {
+   width: 180px;
+   height: 180px;
+   /* padding-left: 50px; */
+}
+
+video {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   z-index: -100;
+   object-fit: cover;
+}

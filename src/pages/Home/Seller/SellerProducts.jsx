@@ -207,7 +207,7 @@ const ModalForm = ({ open, handleClose }) => {
                             width: 1
                         }}>
                             <Button variant='text' onClick={handleClose}>Cancle</Button>
-                            <Button disabled={isLoading} variant="contained" size="large" type="submit" >create Product</Button>
+                            <Button disabled={isLoading || ImageLoading} variant="contained" size="large" type="submit" >create Product</Button>
 
                         </Stack>
                     </Stack>
