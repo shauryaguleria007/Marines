@@ -8,6 +8,11 @@
 body {
     height: 100vh;
     width: 100vw;
+    /* zoom: 0.8; */
+    /* Adjust the scale value as needed */
+
+    /* Optional: Set the transform origin */
+
 }
 
 

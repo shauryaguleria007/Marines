@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useGetAllProductQuery } from "../../../store/services/productApi"
 import { Loading2 } from "../../../components/Loading2"
-import { Stack, Card, CardMedia, CardActions, Button, CardContent, Typography, Box } from "@mui/material"
+import { Stack, Card, CardMedia, CardActions, Button, CardContent, Typography, Box, Paper } from "@mui/material"
 import { getUser } from "../../../store/store"
 import { useNotificationContext } from "../../../context/notificationContext"
 import { useAddTocartMutation } from '../../../store/services/userApi'
@@ -13,21 +13,21 @@ export const UserProducts = () => {
     if (isLoading) return <Loading2 />
 
     return (
+        <Paper sx={{ p: 4, m: 5 }} square variant='outlined'>
+            <Stack direction="row" sx={{
+                flexWrap: "wrap",
+                alignItem: "space-evenly",
+                justifyContent: "space-evenly",
+            }} gap={5}>
 
-        <Stack direction="row" sx={{
-            flexWrap: "wrap",
-            // my: 5,
-            alignItem: "space-evenly",
-            justifyContent: "space-evenly",
-        }} gap={5}>
-
-            {
-                data?.map((product) => {
-                    const imageUrl = product?.images.length !== 0 ? `${import.meta.env.VITE_SETVER_URL}/api/user/image/${product.images[0]}` : ""
-                    return <Product product={product} key={product._id} imageUrl={imageUrl} />
-                })
-            }
-        </Stack>
+                {
+                    data?.map((product) => {
+                        const imageUrl = product?.images.length !== 0 ? `${import.meta.env.VITE_SETVER_URL}/api/user/image/${product.images[0]}` : ""
+                        return <Product product={product} key={product._id} imageUrl={imageUrl} />
+                    })
+                }
+            </Stack>
+        </Paper>
     )
 }
 
@@ -37,7 +37,7 @@ export const UserProducts = () => {
 const Product = ({ product, imageUrl }) => {
     const user = getUser()
     const { notification, addNotification } = useNotificationContext()
-    const [addToCartApi, { data, error }] = useAddTocartMutation()
+    const [addToCartApi, { data, error, isLoading }] = useAddTocartMutation()
 
 
     useEffect(() => {
@@ -54,7 +54,7 @@ const Product = ({ product, imageUrl }) => {
     }
 
     return <Box sx={{
-        flexBasis: "25%",
+        flexBasis: "20%",
         display: "flex",
         justifyContent: "center",
     }}><Card key={product._id} sx={{
@@ -86,7 +86,7 @@ const Product = ({ product, imageUrl }) => {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small" variant="contained" onClick={addTocart}> Add to cart</Button>
+                <Button size="small" variant="contained" onClick={addTocart} disabled={isLoading}> Add to cart</Button>
             </CardActions>
         </Card>
     </Box>

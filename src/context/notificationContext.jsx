@@ -5,10 +5,10 @@ import { useInView } from 'react-intersection-observer';
 const notificationContext = createContext()
 
 export const NotificationContextProvider = ({ children }) => {
-    const { ref, inView } = useInView();
     const { ref: videoRef, inView: videoInView } = useInView({
-        threshold: 0.19,
+        threshold: 0.75,
     });
+
 
 
     const [notification, setNotification] = useState({
@@ -40,10 +40,9 @@ export const NotificationContextProvider = ({ children }) => {
             notification,
             addNotification,
             resetNotification,
-            ref,
-            inView,
             videoRef,
-            videoInView
+            videoInView,
+
         }}>
             {
                 children

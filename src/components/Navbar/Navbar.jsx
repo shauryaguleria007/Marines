@@ -15,13 +15,13 @@ export const Navbar = () => {
     const dispatch = useDispatch()
     const user = getUser()
     const location = useLocation()
-    const { inView, videoInView } = useNotificationContext()
+    const { videoInView } = useNotificationContext()
 
     const [getCart, { data }] = useLazyGetCartDataQuery()
     const [textColor, setTextColor] = useState("white")
     const [barColor, setBarColor] = useState("transparent")
 
-    
+
     useEffect(() => {
         setBarColor("transparent")
         setTextColor("custom1.main")
@@ -75,7 +75,7 @@ export const Navbar = () => {
     }
 
     const addCartAndLogin = () => {
-        if (!user) return <Link to={"/login"}><Button variant='outlined' size='large' color='secondary'><Typography color={"white"}>Login</Typography></Button></Link>
+        if (!user) return <Link to={"/login"}><Button variant='outlined' size='large' color='secondary'><Typography color={textColor}>Login</Typography></Button></Link>
         if (user.role === "USER") return <>
             <Link to="/user/cart">  <IconButton size="large" sx={{ color: textColor, mr: 6 }}>
                 <Badge badgeContent={data ? data.total : 0} color='secondary' >
@@ -91,9 +91,7 @@ export const Navbar = () => {
 
 
     return <>
-        <AppBar position={location.pathname === "/user" ? "fixed" : "static"} sx={{
-            opacity: inView ? 0 : 1
-        }} color={barColor} >
+        <AppBar position={location.pathname === "/user" ? "fixed" : "static"} color={barColor} >
             <Toolbar disableGutters>
                 <IconButton
                     size="large"

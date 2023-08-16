@@ -27,27 +27,12 @@
 
 }
 
-/* 
-.box-container .box h3 {
-   font-size: 2rem;
-   line-height: 1.8;
-   color: rgb(1, 56, 1);
-   padding-left: 100px;
 
-}
-
-.box-container .box p {
-   font-size: 0.9rem;
-   line-height: 1.8;
-   color: var(--light-color);
-   padding: 1rem 0;
-} */
 
 
 .img1 {
    width: 180px;
    height: 180px;
-   /* padding-left: 50px; */
 }
 
 video {
@@ -58,4 +43,7 @@ video {
    height: 100%;
    z-index: -100;
    object-fit: cover;
+   filter: brightness(0.4)
 }
+
+

@@ -14,10 +14,25 @@ export const UserFeaturtes = () => {
             }}> <video src="/3.mp4" autoPlay muted loop>
 
                 </video>
-                <div className="">asfsdfasdffffffffff</div>
+
+
+                <Stack sx={{
+                    height: 1,
+                    width: 1,
+                    // border: "1px solid black",
+                    justifyContent: "center",
+                    alignItems: "left",
+                    px: 7
+
+                }}>
+                    < Typography variant="h1" fontWeight={600} color="custom1.main">Fresh.<span>Vegetables</span></Typography>
+                    < Typography sx={{
+                        width: 0.8
+                    }} variant="h5" fontWeight={100} color="white">It is important to look for freshness in all vegetables we consume. Check the characteristic signs of freshness such as bright, lively color in the vegetable and look to see if the vegetable is crisp and free of soft spots. Vegetables are at their peak during their harvest season, this is also when vegetables are the most affordable to purchase.</Typography>
+                </Stack>
             </Box>
 
-            <h1 className="heading">our <span>Features</span></h1>
+            <Box mt={12}>     <h1 className="heading">our <span>Features</span></h1></Box>
             <Stack className='box-container' sx={{
                 // border: "1px solid black",
                 my: 4,
@@ -73,7 +88,7 @@ export const UserFeaturtes = () => {
                     </Typography>
                 </Paper>
             </Stack >
-            <h1 className="heading">our <span>Products</span></h1>
+            <Box m={10}>  <h1 className="heading">our <span>Products</span></h1></Box>
 
         </>
     )
