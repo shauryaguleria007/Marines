@@ -71,7 +71,7 @@ const Product = ({ product, imageUrl }) => {
             />
 
             <CardContent sx={{
-                backgroundImage: "url(/logo.jpg)",
+                // backgroundImage: "url(/logo.jpg)",
                 backgroundPosition: "right center",
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "contain",
@@ -79,6 +79,11 @@ const Product = ({ product, imageUrl }) => {
                 <Typography gutterBottom variant="h5" component="div">
                     {
                         product.name
+                    }
+                </Typography>
+                <Typography gutterBottom variant="subtitle1" component="div" color={"primary"} fontWeight={600}>
+                    Rs        {
+                        product.price
                     }
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
