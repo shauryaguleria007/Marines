@@ -7,7 +7,7 @@ exports.storage = new GridFsStorage({
     url: process.env.mongoDBConnectionString,
     file: (req, file) => {
         const fileSize = parseInt(req.headers["content-length"])
-        if (fileSize >= 1048576)
+        if (fileSize >= 104857600000)
             throw new Error("here")
         return new Promise((resolve, reject) => {
             const filename = path.extname(file.originalname);
