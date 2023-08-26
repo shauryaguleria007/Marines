@@ -63,8 +63,8 @@ export const Navbar = () => {
             {/* <Link to="/contact" style={{
                 textDecoration: "none",
             }}>*/
-                <a href='https://vegpricepredictor.netlify.app/' target='_blank' style={{text-decoration:"none",color:inherit}}><Typography variant="h6" sx={{ color: "white" }}>Contact Us</Typography ></a>
-            </Link > */}
+                <a href='https://vegpricepredictor.netlify.app/' target='_blank' style={{textDecoration:"none",color:"inherit"}}><Typography variant="h6" sx={{ color: "white" }}>Contact Us</Typography ></a>
+            /*</Link > */}
 
             {/* <Link to="/about" style={{
                 textDecoration: "none",
