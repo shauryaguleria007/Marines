@@ -55,15 +55,18 @@ export const Navbar = () => {
 
     const addUserLinks = () => {
         return <>
-            {location.pathname !== "/user" ? <Link to="/user" style={{
+            {location.pathname !== "/user" ? <><Link to="/user" style={{
                 textDecoration: "none",
             }}>
                 <Typography variant="h6" color={textColor}>Home</Typography>
-            </Link> : ""}
+            </Link>
+            </> : ""}
+            <a href='https://vegpricepredictor.netlify.app/' target='_blank' style={{ textDecoration: "none", color: "inherit" }}><Typography variant="h6" color={textColor}>Price prediction</Typography ></a>
+
             {/* <Link to="/contact" style={{
                 textDecoration: "none",
             }}>*/
-                <a href='https://vegpricepredictor.netlify.app/' target='_blank' style={{textDecoration:"none",color:"inherit"}}><Typography variant="h6" sx={{ color: "white" }}>Contact Us</Typography ></a>
+                // <a href='https://vegpricepredictor.netlify.app/' target='_blank' style={{ textDecoration: "none", color: "inherit" }}><Typography variant="h6" sx={{ color: "white" }}>Contact Us</Typography ></a>
             /*</Link > */}
 
             {/* <Link to="/about" style={{
