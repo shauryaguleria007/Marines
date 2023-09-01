@@ -4,7 +4,8 @@ const mongoose = require("mongoose")
 const orderSchema = new mongoose.Schema({
     user: {
         type: mongoose.Types.ObjectId,
-        required: true
+        required: true,
+        ref:"User"
     },
     seller: {
         type: mongoose.Types.ObjectId,
@@ -12,7 +13,8 @@ const orderSchema = new mongoose.Schema({
     },
     product: {
         type: mongoose.Types.ObjectId,
-        required: true
+        required: true,
+        ref:"Product"
     },
     quantity: {
         type: Number,

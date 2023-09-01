@@ -37,7 +37,10 @@ exports.getAllOrders = RouterAsyncErrorHandler(async (req, res, next) => {
     if (req.user.role === "USER") filter = { user: user.id }
     if (req.user.role === "SELLER") filter = { seller: user.id }
 
-    const orders = await OrderModal.find(filter)
+    const orders = await OrderModal.find(filter).populate("product").populate({
+        path: "user",
+        select: ["name"]
+    })
     if (!orders) throw new Error()
 
     res.json(orders)

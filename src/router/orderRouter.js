@@ -14,12 +14,8 @@ const Router = express.Router()
 Router.route("/add").post(passport.authenticate(["userJwtStrategy"], { session: false }), createOrder)
 
 
-Router.route("/get/all").post(
-    passport.authenticate(["userJwtStrategy", "sellerJwtStrategy"], { session: false }), [
-    check("sellerId").optional().isMongoId(),
-    check("userId").optional().isMongoId()
-],
-    routeCredentialValidator,
+Router.route("/get/all").get(
+    passport.authenticate(["userJwtStrategy", "sellerJwtStrategy"], { session: false }), 
     getAllOrders
 )
 module.exports = Router
