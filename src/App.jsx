@@ -14,6 +14,7 @@ import { UserHome } from "./pages/Home/user/UserHome"
 import { Cart } from "./pages/cart/Cart"
 import { SellerLogin } from "./pages/Login/SellerLogin"
 import { About } from "./pages/About/About"
+import { Order} from "./pages/cart/order"
 
 export const App = () => {
 
@@ -38,6 +39,8 @@ export const App = () => {
           <Route path="/user" Component={UserAuthorizer}>
             <Route path="/user/" Component={UserHome} />
             <Route path="/user/cart" Component={Cart} />
+            <Route path="/user/order" Component={Order} />
+
           </Route>
 
           <Route path="/seller" Component={SellerAuthorizer}>

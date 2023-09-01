@@ -60,9 +60,17 @@ export const Navbar = () => {
             }}>
                 <Typography variant="h6" color={textColor}>Home</Typography>
             </Link>
+
+
+
             </> : ""}
             <a href='https://vegpricepredictor.netlify.app/' target='_blank' style={{ textDecoration: "none", color: "inherit" }}><Typography variant="h6" color={textColor}>Price prediction</Typography ></a>
 
+            <Link to="/user/order" style={{
+                textDecoration: "none",
+            }}>
+                <Typography variant="h6" color={textColor}>Orders</Typography>
+            </Link>
             {/* <Link to="/contact" style={{
                 textDecoration: "none",
             }}>*/
