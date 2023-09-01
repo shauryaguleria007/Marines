@@ -28,11 +28,16 @@ export const orderApi = createApi({
             keepUnusedDataFor: 0.1,
 
         }),
+        getAllOrders: builder.query({
+            query: () => "/get/all",
+            keepUnusedDataFor: 0.1
+        })
     }),
 })
 
 
 
 export const {
-    useCreateOrderMutation
+    useCreateOrderMutation,
+    useGetAllOrdersQuery
 } = orderApi
