@@ -28,6 +28,16 @@ export const orderApi = createApi({
             keepUnusedDataFor: 0.1,
 
         }),
+
+        getPaymentData: builder.mutation({
+            query: (body) => ({
+                url: "/checkout",
+                method: "Post",
+                body
+            }),
+            keepUnusedDataFor: 0.1,
+
+        }),
         getAllOrders: builder.query({
             query: () => "/get/all",
             keepUnusedDataFor: 0.1
@@ -39,5 +49,6 @@ export const orderApi = createApi({
 
 export const {
     useCreateOrderMutation,
-    useGetAllOrdersQuery
+    useGetAllOrdersQuery,
+    useGetPaymentDataMutation
 } = orderApi
