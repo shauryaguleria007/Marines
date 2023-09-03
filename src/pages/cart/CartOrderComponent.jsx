@@ -13,6 +13,7 @@ export const CartOrderComponent = ({ data }) => {
     const dispatch = useDispatch()
 
     const order = async () => {
+        await createOrder()
         const key_id = import.meta.env.VITE_rezor_secrete_key
         const paymentData = await createPayment({ amount: data.price })
         const options = {
@@ -41,7 +42,6 @@ export const CartOrderComponent = ({ data }) => {
 
         const razor = new window.Razorpay(options);
         razor.open()
-        // await createOrder()
 
     }
 
