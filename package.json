@@ -23,8 +23,10 @@
     "multer-gridfs-storage": "^5.0.2",
     "nodemailer": "^6.9.4",
     "nodemon": "^3.0.1",
+    "or": "^0.2.0",
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
-    "passport-jwt": "^4.0.1"
+    "passport-jwt": "^4.0.1",
+    "razorpay": "^2.9.2"
   }
 }

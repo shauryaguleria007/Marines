@@ -3,6 +3,7 @@ const { ProductModal } = require("../modal/productModel")
 const { RouterAsyncErrorHandler } = require("../middleware/ErrorHandler/MiddlewareErrorHandlers")
 const { Router } = require("express")
 const mongoose = require("mongoose")
+const { instance } = require("../utility/Razorpay")
 const { UserModal } = require("../modal/userModal")
 
 exports.createOrder = RouterAsyncErrorHandler(async (req, res, next) => {
@@ -45,3 +46,34 @@ exports.getAllOrders = RouterAsyncErrorHandler(async (req, res, next) => {
 
     res.json(orders)
 })
+
+
+
+exports.checkout = RouterAsyncErrorHandler(async (req, res, next) => {
+    const options = {
+        amount: Number(req.body.amount * 100),
+        currency: "INR",
+    };
+    const order = await instance.orders.create(options);
+    console.log(order);
+    res.send({
+        success: true,
+        order,
+    })
+})
+
+
+exports.verify = RouterAsyncErrorHandler(async (req, res, next) => {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body
+    console.log(razorpay_order_id, razorpay_payment_id);
+    //   const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+    //     req.body;
+    //   const body = razorpay_order_id + "|" + razorpay_payment_id;
+    //   const expectedSignature = crypto
+    //     .createHmac("sha256", process.env.rezor_secrete_key)
+    //     .update(body.toString())
+    //     .digest("hex");
+    // const isAuthentic=expectedSignature===razorpay_signature;
+    res.redirect(`${process.env.CLIENT_URL}/user`)
+}
+)

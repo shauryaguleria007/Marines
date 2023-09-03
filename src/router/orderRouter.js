@@ -1,4 +1,4 @@
-const { createOrder, getAllOrders } = require("../controller/orderController")
+const { createOrder, getAllOrders, checkout, verify } = require("../controller/orderController")
 
 
 
@@ -15,7 +15,13 @@ Router.route("/add").post(passport.authenticate(["userJwtStrategy"], { session: 
 
 
 Router.route("/get/all").get(
-    passport.authenticate(["userJwtStrategy", "sellerJwtStrategy"], { session: false }), 
+    passport.authenticate(["userJwtStrategy", "sellerJwtStrategy"], { session: false }),
     getAllOrders
 )
 module.exports = Router
+
+Router.route("/checkout").post(passport.authenticate(["userJwtStrategy"], { session: false }),
+    checkout
+)
+
+Router.route("/verify").post(verify)
